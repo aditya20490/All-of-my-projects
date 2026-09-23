@@ -1,1 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>Aditya — Projects & Portfolio</title>
+
+    <meta name="description"
+          content="Aditya's personal portfolio — websites, tools and projects built by me.">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                         Roboto, Helvetica, Arial, sans-serif;
+            background: #0a0a0a;
+            color: #f5f5f5;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* ---------- Background ---------- */
+
+        body::before {
+            content: "";
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            top: -250px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: radial-gradient(
+                circle,
+                rgba(255,255,255,0.07),
+                transparent 70%
+            );
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* ---------- Navigation ---------- */
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            background: rgba(10,10,10,0.75);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .nav-links a {
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        /* ---------- Hero ---------- */
+
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 20px 80px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .small-label {
+            display: inline-block;
+            color: #aaa;
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(55px, 10vw, 110px);
+            line-height: 0.95;
+            letter-spacing: -6px;
+            font-weight: 800;
+            margin-bottom: 28px;
+        }
+
+        .hero h1 span {
+            color: #777;
+        }
+
+        .hero p {
+            max-width: 600px;
+            margin: auto;
+            color: #aaa;
+            font-size: 18px;
+            line-height: 1.7;
+        }
+
+        .hero-buttons {
+            margin-top: 35px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 22px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .button-primary {
+            background: white;
+            color: black;
+        }
+
+        .button-primary:hover {
+            transform: translateY(-2px);
+            background: #e8e8e8;
+        }
+
+        .button-secondary {
+            border: 1px solid #333;
+            color: #ddd;
+        }
+
+        .button-secondary:hover {
+            border-color: #666;
+            transform: translateY(-2px);
+        }
+
+        /* ---------- Projects ---------- */
+
+        .projects-section {
+            max-width: 1100px;
+            margin: auto;
+            padding: 80px 25px 120px;
+        }
+
+        .section-heading {
+            margin-bottom: 45px;
+        }
+
+        .section-heading p {
+            color: #777;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .section-heading h2 {
+            font-size: clamp(32px, 5vw, 48px);
+            letter-spacing: -2px;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        /* ---------- Project Card ---------- */
+
+        .project-card {
+            position: relative;
+            min-height: 330px;
+            padding: 30px;
+            border: 1px solid #242424;
+            border-radius: 16px;
+            background: #101010;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            transition: transform 0.25s ease,
+                        border-color 0.25s ease,
+                        background 0.25s ease;
+        }
+
+        .project-card::before {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            top: -90px;
+            right: -90px;
+            background: radial-gradient(
+                circle,
+                rgba(255,255,255,0.08),
+                transparent 70%
+            );
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            border-color: #444;
+            background: #131313;
+        }
+
+        .project-card:hover::before {
+            transform: scale(1.5);
+        }
+
+        .project-number {
+            color: #666;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .project-icon {
+            font-size: 38px;
+            margin: 25px 0 15px;
+        }
+
+        .project-card h3 {
+            font-size: 25px;
+            letter-spacing: -0.7px;
+            margin-bottom: 10px;
+        }
+
+        .project-card p {
+            color: #888;
+            font-size: 14px;
+            max-width: 450px;
+        }
+
+        .project-bottom {
+            margin-top: 30px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .project-button {
+            padding: 9px 15px;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid #303030;
+            transition: all 0.2s ease;
+        }
+
+        .project-button:hover {
+            background: white;
+            color: black;
+            border-color: white;
+        }
+
+        .project-button.primary {
+            background: white;
+            color: black;
+            border-color: white;
+        }
+
+        .project-button.primary:hover {
+            background: #ddd;
+        }
+
+        /* ---------- About ---------- */
+
+        .about-section {
+            max-width: 900px;
+            margin: auto;
+            padding: 50px 25px 120px;
+            text-align: center;
+        }
+
+        .about-section h2 {
+            font-size: 40px;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+
+        .about-section p {
+            color: #999;
+            max-width: 650px;
+            margin: auto;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        /* ---------- Footer ---------- */
+
+        footer {
+            border-top: 1px solid #202020;
+            padding: 35px 25px;
+            text-align: center;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .footer-github {
+            color: #aaa;
+            margin-top: 8px;
+            display: inline-block;
+            transition: color 0.2s ease;
+        }
+
+        .footer-github:hover {
+            color: white;
+        }
+
+        /* ---------- Mobile ---------- */
+
+        @media (max-width: 700px) {
+
+            nav {
+                padding: 0 20px;
+            }
+
+            .nav-links {
+                gap: 15px;
+                font-size: 12px;
+            }
+
+            .hero {
+                min-height: 80vh;
+                padding-top: 120px;
+            }
+
+            .hero h1 {
+                letter-spacing: -4px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project-card {
+                min-height: 300px;
+            }
+
+            .about-section h2 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+
+    <nav>
+        <a href="#" class="logo">ADITYA.</a>
+
+        <ul class="nav-links">
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#about">About</a></li>
+            <li>
+                <a href="https://github.com/aditya20490"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    GitHub
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+
+    <!-- Hero -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="small-label">
+                Engineering Student · Builder
+            </div>
+
+            <h1>
+                ADITYA<span>.</span>
+            </h1>
+
+            <p>
+                I build websites, tools and experiments to solve
+                small problems I come across.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a href="#projects"
+                   class="button button-primary">
+                    Explore My Projects
+                </a>
+
+                <a href="https://github.com/aditya20490"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="button button-secondary">
+                    GitHub ↗
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Projects -->
+
+    <section class="projects-section" id="projects">
+
+        <div class="section-heading">
+
+            <p>Things I've built</p>
+
+            <h2>My Projects</h2>
+
+        </div>
+
+
+        <div class="projects-grid">
+
+
+            <!-- Project 01 -->
+
+            <article class="project-card">
+
+                <div>
+
+                    <div class="project-number">
+                        01 / WEBSITE
+                    </div>
+
+                    <div class="project-icon">
+                        🎬
+                    </div>
+
+                    <h3>Pure Cinema</h3>
+
+                    <p>
+                        A cinema-focused web project built and
+                        deployed as a standalone website.
+                    </p>
+
+                </div>
+
+                <div class="project-bottom">
+
+                    <a href="http://pure-cinema.in/"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="project-button primary">
+                        Open Website ↗
+                    </a>
+
+                </div>
+
+            </article>
+
+
+            <!-- Project 02 -->
+
+            <article class="project-card">
+
+                <div>
+
+                    <div class="project-number">
+                        02 / TOOL
+                    </div>
+
+                    <div class="project-icon">
+                        ✍️
+                    </div>
+
+                    <h3>Study With Me Creator</h3>
+
+                    <p>
+                        A simple tool for creating titles and
+                        descriptions for study-with-me streams.
+                    </p>
+
+                </div>
+
+                <div class="project-bottom">
+
+                    <a href="https://aditya20490.github.io/Study-with-me-title-and-description-creator/"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="project-button primary">
+                        Open Website ↗
+                    </a>
+
+                </div>
+
+            </article>
+
+
+            <!-- Project 03 -->
+
+            <article class="project-card">
+
+                <div>
+
+                    <div class="project-number">
+                        03 / TOOL
+                    </div>
+
+                    <div class="project-icon">
+                        🫥
+                    </div>
+
+                    <h3>Custom Blur PNG Maker</h3>
+
+                    <p>
+                        A tool for creating customizable blur
+                        PNG overlays for camera setups.
+                    </p>
+
+                </div>
+
+                <div class="project-bottom">
+
+                    <a href="https://aditya20490.github.io/Custom-blur-png-maker/"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="project-button primary">
+                        Open Website ↗
+                    </a>
+
+                </div>
+
+            </article>
+
+
+            <!-- Project 04 -->
+
+            <article class="project-card">
+
+                <div>
+
+                    <div class="project-number">
+                        04 / EXPERIMENT
+                    </div>
+
+                    <div class="project-icon">
+                        🧩
+                    </div>
+
+                    <h3>Widgets Problem Solved</h3>
+
+                    <p>
+                        A web project built around solving a
+                        specific widget-related problem.
+                    </p>
+
+                </div>
+
+                <div class="project-bottom">
+
+                    <a href="https://aditya20490.github.io/Widgets-problem-solved/"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="project-button primary">
+                        Open Website ↗
+                    </a>
+
+                </div>
+
+            </article>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- About -->
+
+    <section class="about-section" id="about">
+
+        <h2>A little about me.</h2>
+
+        <p>
+            I'm Aditya, an engineering student who enjoys
+            building things on the internet. This website is
+            a small collection of the projects, tools and
+            experiments I've created along the way.
+        </p>
+
+    </section>
+
+
+    <!-- Footer -->
+
+    <footer>
+
+        <div>
+            Built by Aditya.
+        </div>
+
+        <a href="https://github.com/aditya20490"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="footer-github">
+            github.com/aditya20490 ↗
+        </a>
+
+    </footer>
+
+
+</body>
+</html>
