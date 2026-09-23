@@ -36,7 +36,6 @@
       touch-action: none;
     }
 
-    /* Subtle background atmosphere */
     body::before {
       content: "";
       position: fixed;
@@ -46,11 +45,9 @@
       background:
         radial-gradient(
           circle at 50% 45%,
-          rgba(255,255,255,0.035),
+          rgba(255, 255, 255, 0.035),
           transparent 38%
         );
-
-      z-index: 0;
     }
 
     /* =========================
@@ -61,6 +58,7 @@
       position: fixed;
       top: 0;
       left: 0;
+
       width: 100%;
       height: 70px;
 
@@ -70,9 +68,9 @@
 
       padding: 0 34px;
 
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 
-      background: rgba(10,10,10,0.72);
+      background: rgba(10, 10, 10, 0.72);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
 
@@ -114,7 +112,6 @@
 
     .hero {
       position: relative;
-      z-index: 1;
 
       width: 100%;
       height: 100dvh;
@@ -124,18 +121,15 @@
       justify-content: center;
 
       padding: 70px 24px 0;
+
+      z-index: 1;
     }
 
     /*
-      IMPORTANT:
+      The layout itself NEVER gets transformed.
 
-      The hero-content is NOT transformed.
-
-      Its children are positioned normally, while
-      the spacing between them is controlled using
-      CSS variables.
-
-      This means the text itself NEVER gets scaled.
+      Each individual item gets a tiny translateY
+      only while actual overscroll is happening.
     */
 
     .hero-content {
@@ -144,20 +138,13 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-
-      --gap-top: 0px;
-      --gap-name: 28px;
-      --gap-description: 18px;
-      --gap-buttons: 34px;
     }
 
     /* =========================
-       TOP ANCHOR
+       ITEMS
     ========================= */
 
     .small-label {
-      flex: 0 0 auto;
-
       color: #8d8d8d;
 
       font-size: 13px;
@@ -165,17 +152,15 @@
       letter-spacing: 0.8px;
 
       /*
-        This element is the TOP ANCHOR.
-        It never moves.
+        TOP ANCHOR:
+        This element never moves.
       */
+
+      transform: translate3d(0, 0, 0);
     }
 
-    /* =========================
-       NAME
-    ========================= */
-
     .name {
-      margin-top: var(--gap-name);
+      margin-top: 28px;
 
       color: #fff;
 
@@ -186,16 +171,14 @@
       letter-spacing: 1.8px;
 
       white-space: nowrap;
-    }
 
-    /* =========================
-       DESCRIPTION
-    ========================= */
+      transform: translate3d(0, 0, 0);
+    }
 
     .description {
       max-width: 570px;
 
-      margin-top: var(--gap-description);
+      margin-top: 18px;
 
       color: #8f8f8f;
 
@@ -203,23 +186,23 @@
       line-height: 1.7;
 
       text-align: center;
-    }
 
-    /* =========================
-       BUTTONS
-    ========================= */
+      transform: translate3d(0, 0, 0);
+    }
 
     .hero-buttons {
       display: flex;
       align-items: center;
       gap: 12px;
 
-      margin-top: var(--gap-buttons);
+      margin-top: 34px;
 
       /*
-        These are the BOTTOM ANCHORS.
-        They don't move during overscroll.
+        BOTTOM ANCHOR:
+        These buttons never move.
       */
+
+      transform: translate3d(0, 0, 0);
     }
 
     .button {
@@ -255,14 +238,15 @@
 
     .button-secondary {
       color: #eee;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.035);
+
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.035);
     }
 
     .button-secondary:hover {
       transform: translateY(-2px);
-      border-color: rgba(255,255,255,0.25);
-      background: rgba(255,255,255,0.07);
+      border-color: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.07);
     }
 
     /* =========================
@@ -288,28 +272,28 @@
         padding-top: 62px;
       }
 
-      .hero-content {
-        --gap-name: 24px;
-        --gap-description: 16px;
-        --gap-buttons: 28px;
-      }
-
       .small-label {
         font-size: 12px;
       }
 
       .name {
+        margin-top: 24px;
+
         font-size: clamp(48px, 15vw, 70px);
         letter-spacing: 1px;
       }
 
       .description {
         max-width: 330px;
+
+        margin-top: 16px;
+
         font-size: 14px;
         line-height: 1.65;
       }
 
       .hero-buttons {
+        margin-top: 28px;
         gap: 9px;
       }
 
@@ -322,14 +306,24 @@
   </style>
 </head>
 
+
 <body>
 
-  <!-- NAVIGATION -->
+  <!-- =========================
+       NAVIGATION
+  ========================= -->
+
   <nav>
-    <a href="index.html" class="logo">ADITYA</a>
+
+    <a href="index.html" class="logo">
+      ADITYA
+    </a>
 
     <div class="nav-links">
-      <a href="projects.html">Projects</a>
+
+      <a href="projects.html">
+        Projects
+      </a>
 
       <a
         href="https://github.com/aditya20490"
@@ -338,11 +332,16 @@
       >
         GitHub ↗
       </a>
+
     </div>
+
   </nav>
 
 
-  <!-- HERO -->
+  <!-- =========================
+       HERO
+  ========================= -->
+
   <main class="hero">
 
     <div class="hero-content" id="heroContent">
@@ -353,11 +352,13 @@
       </div>
 
 
-      <!-- MIDDLE CONTENT -->
+      <!-- ITEM 1 -->
       <h1 class="name" id="name">
         ADITYA
       </h1>
 
+
+      <!-- ITEM 2 -->
       <p class="description" id="description">
         I build websites, tools and experiments to solve the small problems I come across.
       </p>
@@ -392,313 +393,504 @@
   <script>
 
     /*
-      ============================================================
-      ELASTIC OVERSCROLL
-      ============================================================
+    ============================================================
+      iOS-STYLE BOTTOM OVERSCROLL
+    ============================================================
 
-      No element is scaled.
+      IMPORTANT:
 
-      We only modify the vertical spacing between elements.
+      The normal layout is NEVER modified.
 
-      TOP overscroll:
-        JEE Aspirant stays fixed.
-        Everything below it compresses upward.
+      We detect how far the user tries to scroll beyond
+      the bottom boundary.
 
-      BOTTOM overscroll:
-        Buttons stay fixed.
-        Everything above them compresses downward.
+      Then we progressively translate the items according
+      to their position.
 
-      When released:
-        The original spacing smoothly returns.
+      This is conceptually the same idea as the video:
+
+        overscroll distance
+              ↓
+        spacing / item offset
+              ↓
+        progressively larger movement
+
+      There is NO scaleY().
+      There is NO text distortion.
+      There is NO movement of the whole hero.
     */
 
 
-    const hero = document.getElementById("heroContent");
-
-    const MAX_PULL = 34;
-
-    let pull = 0;
-    let startY = null;
-    let lastY = null;
-
-    let animationFrame = null;
+    const topAnchor = document.getElementById("topAnchor");
+    const name = document.getElementById("name");
+    const description = document.getElementById("description");
+    const bottomAnchor = document.getElementById("bottomAnchor");
 
 
     /*
-      Apply the elastic spacing.
+      Maximum visual overscroll.
 
-      We progressively reduce the gaps between the
-      elements rather than transforming the elements.
+      Keep this small because the design is intentionally subtle.
     */
 
-    function applyElastic(value) {
+    const MAX_OVERSCROLL = 18;
+
+
+    /*
+      Resistance factor.
+
+      Larger = easier to pull.
+      Smaller = stronger resistance.
+    */
+
+    const RESISTANCE = 0.22;
+
+
+    let touchStartY = null;
+    let overscroll = 0;
+
+    let resetTimer = null;
+
+
+    /*
+    ============================================================
+      APPLY OVERSCROLL
+    ============================================================
+    */
+
+    function applyOverscroll(amount) {
 
       /*
-        value > 0
-        = user is trying to go DOWN the page
-        = top anchor stays fixed
-        = lower content compresses upward
+        IMPORTANT:
+
+        Top anchor stays exactly where it is.
+        Bottom anchor stays exactly where it is.
+
+        Only the middle items move.
+
+        The farther an item is toward the bottom,
+        the greater its translation.
+
+        This creates the visual impression that
+        the vertical spaces are being compressed.
       */
 
-      if (value > 0) {
 
-        const amount = Math.min(value, MAX_PULL);
+      if (amount <= 0) {
 
         /*
-          The farther elements are from the anchor,
-          the more their spacing is compressed.
+          Absolutely NO top overscroll effect.
+
+          Swiping downward simply does nothing.
         */
 
-        hero.style.setProperty(
-          "--gap-name",
-          `${28 - amount * 0.32}px`
-        );
+        topAnchor.style.transform = "translate3d(0, 0, 0)";
+        name.style.transform = "translate3d(0, 0, 0)";
+        description.style.transform = "translate3d(0, 0, 0)";
+        bottomAnchor.style.transform = "translate3d(0, 0, 0)";
 
-        hero.style.setProperty(
-          "--gap-description",
-          `${18 - amount * 0.22}px`
-        );
-
-        hero.style.setProperty(
-          "--gap-buttons",
-          `${34 - amount * 0.28}px`
-        );
-
+        return;
       }
 
 
       /*
-        value < 0
-        = user is trying to go UP the page
-        = bottom anchor stays fixed
-        = upper content compresses toward buttons
+        Amount is already resisted.
       */
 
-      else {
+      const value = Math.min(
+        amount,
+        MAX_OVERSCROLL
+      );
 
-        const amount = Math.min(Math.abs(value), MAX_PULL);
 
-        hero.style.setProperty(
-          "--gap-name",
-          `${28 - amount * 0.28}px`
-        );
+      /*
+        TOP ANCHOR
+        ──────────
+        Never moves.
+      */
 
-        hero.style.setProperty(
-          "--gap-description",
-          `${18 - amount * 0.22}px`
-        );
+      topAnchor.style.transform =
+        "translate3d(0, 0, 0)";
 
-        hero.style.setProperty(
-          "--gap-buttons",
-          `${34 - amount * 0.32}px`
-        );
 
-      }
+      /*
+        ADITYA
+        ──────
+        Moves slightly upward.
+      */
 
+      name.style.transform =
+        `translate3d(0, ${-value * 0.32}px, 0)`;
+
+
+      /*
+        DESCRIPTION
+        ───────────
+        Moves more because it is farther
+        from the fixed top anchor.
+      */
+
+      description.style.transform =
+        `translate3d(0, ${-value * 0.64}px, 0)`;
+
+
+      /*
+        BUTTONS
+        ───────
+        Fixed bottom anchor.
+
+        They do NOT move.
+      */
+
+      bottomAnchor.style.transform =
+        "translate3d(0, 0, 0)";
     }
 
 
     /*
-      Smoothly return to the original layout.
+    ============================================================
+      RESET
+    ============================================================
     */
 
-    function resetElastic() {
+    function resetOverscroll() {
 
-      hero.style.transition = `
-        --gap-name 420ms cubic-bezier(.22,.8,.25,1),
-        --gap-description 420ms cubic-bezier(.22,.8,.25,1),
-        --gap-buttons 420ms cubic-bezier(.22,.8,.25,1)
-      `;
+      /*
+        Spring-like CSS transition.
 
-      hero.style.setProperty("--gap-name", "28px");
-      hero.style.setProperty("--gap-description", "18px");
-      hero.style.setProperty("--gap-buttons", "34px");
+        Again, we're only moving the middle items.
+        Nothing gets scaled.
+      */
 
-      pull = 0;
+      topAnchor.style.transition =
+        "transform 420ms cubic-bezier(.22,.8,.25,1)";
 
-      setTimeout(() => {
-        hero.style.transition = "";
+      name.style.transition =
+        "transform 420ms cubic-bezier(.22,.8,.25,1)";
+
+      description.style.transition =
+        "transform 420ms cubic-bezier(.22,.8,.25,1)";
+
+      bottomAnchor.style.transition =
+        "transform 420ms cubic-bezier(.22,.8,.25,1)";
+
+
+      topAnchor.style.transform =
+        "translate3d(0, 0, 0)";
+
+      name.style.transform =
+        "translate3d(0, 0, 0)";
+
+      description.style.transform =
+        "translate3d(0, 0, 0)";
+
+      bottomAnchor.style.transform =
+        "translate3d(0, 0, 0)";
+
+
+      overscroll = 0;
+
+
+      clearTimeout(resetTimer);
+
+      resetTimer = setTimeout(() => {
+
+        topAnchor.style.transition = "";
+        name.style.transition = "";
+        description.style.transition = "";
+        bottomAnchor.style.transition = "";
+
       }, 450);
     }
 
 
     /*
-      ------------------------------------------------------------
-      TOUCH
-      ------------------------------------------------------------
+    ============================================================
+      TOUCH START
+    ============================================================
     */
 
     document.addEventListener(
       "touchstart",
       (event) => {
 
-        if (event.touches.length !== 1) return;
+        if (event.touches.length !== 1) {
+          return;
+        }
 
-        startY = event.touches[0].clientY;
-        lastY = startY;
+        touchStartY =
+          event.touches[0].clientY;
 
-        hero.style.transition = "none";
+
+        /*
+          Remove the return animation while
+          the finger is actively moving.
+        */
+
+        topAnchor.style.transition = "none";
+        name.style.transition = "none";
+        description.style.transition = "none";
+        bottomAnchor.style.transition = "none";
 
       },
-      { passive: true }
+      {
+        passive: true
+      }
     );
 
+
+    /*
+    ============================================================
+      TOUCH MOVE
+    ============================================================
+    */
 
     document.addEventListener(
       "touchmove",
       (event) => {
 
-        if (startY === null) return;
+        if (touchStartY === null) {
+          return;
+        }
 
-        const currentY = event.touches[0].clientY;
 
-        /*
-          Finger moving upward:
-          currentY becomes smaller.
+        const currentY =
+          event.touches[0].clientY;
 
-          That means the user is trying to scroll DOWN.
-        */
-
-        const delta = startY - currentY;
 
         /*
-          Resistance curve.
-
-          The farther they pull,
-          the harder it becomes to pull.
+          Finger moves UP
+          ↓
+          currentY becomes smaller
+          ↓
+          positive delta
+          ↓
+          user is trying to scroll DOWN
         */
 
-        const resisted =
-          Math.sign(delta) *
+        const delta =
+          touchStartY - currentY;
+
+
+        /*
+          ONLY positive delta creates overscroll.
+
+          If the finger moves DOWN:
+
+              delta < 0
+
+          and therefore:
+
+              NOTHING HAPPENS.
+        */
+
+        if (delta <= 0) {
+
+          overscroll = 0;
+
+          applyOverscroll(0);
+
+          return;
+        }
+
+
+        /*
+          Apply resistance.
+
+          This creates the characteristic
+          iOS rubber-band feel.
+        */
+
+        overscroll =
           Math.min(
-            Math.abs(delta) * 0.28,
-            MAX_PULL
+            delta * RESISTANCE,
+            MAX_OVERSCROLL
           );
 
-        pull = resisted;
 
-        applyElastic(pull);
-
-        lastY = currentY;
+        applyOverscroll(overscroll);
 
       },
-      { passive: true }
+      {
+        passive: true
+      }
     );
 
+
+    /*
+    ============================================================
+      TOUCH END
+    ============================================================
+    */
 
     document.addEventListener(
       "touchend",
       () => {
 
-        if (startY === null) return;
+        if (touchStartY === null) {
+          return;
+        }
 
-        resetElastic();
+        touchStartY = null;
 
-        startY = null;
-        lastY = null;
+        resetOverscroll();
 
       },
-      { passive: true }
+      {
+        passive: true
+      }
     );
 
 
     /*
-      ------------------------------------------------------------
-      MOUSE WHEEL
-      ------------------------------------------------------------
-
-      Desktop users also get the same effect.
+    ============================================================
+      TOUCH CANCEL
+    ============================================================
     */
 
-    let wheelTimeout;
+    document.addEventListener(
+      "touchcancel",
+      () => {
+
+        touchStartY = null;
+
+        resetOverscroll();
+
+      },
+      {
+        passive: true
+      }
+    );
+
+
+    /*
+    ============================================================
+      DESKTOP WHEEL
+    ============================================================
+
+      Same idea for mouse/trackpad.
+
+      Scrolling DOWN:
+        → bottom overscroll effect.
+
+      Scrolling UP:
+        → nothing.
+    */
 
     document.addEventListener(
       "wheel",
       (event) => {
 
-        event.preventDefault();
-
-        hero.style.transition = "none";
-
         /*
-          Accumulate wheel movement.
+          deltaY > 0 means the user is trying
+          to move downward through the page.
         */
 
-        pull += event.deltaY * 0.12;
+        if (event.deltaY <= 0) {
 
-        pull = Math.max(
-          -MAX_PULL,
-          Math.min(MAX_PULL, pull)
+          resetOverscroll();
+
+          return;
+        }
+
+
+        clearTimeout(resetTimer);
+
+        topAnchor.style.transition = "none";
+        name.style.transition = "none";
+        description.style.transition = "none";
+        bottomAnchor.style.transition = "none";
+
+
+        overscroll +=
+          event.deltaY * RESISTANCE;
+
+
+        overscroll =
+          Math.min(
+            overscroll,
+            MAX_OVERSCROLL
+          );
+
+
+        applyOverscroll(overscroll);
+
+
+        resetTimer = setTimeout(
+          resetOverscroll,
+          90
         );
 
-        applyElastic(pull);
-
-        clearTimeout(wheelTimeout);
-
-        wheelTimeout = setTimeout(() => {
-          resetElastic();
-        }, 90);
-
       },
-      { passive: false }
+      {
+        passive: true
+      }
     );
 
 
     /*
-      ------------------------------------------------------------
+    ============================================================
       KEYBOARD
-      ------------------------------------------------------------
+    ============================================================
 
-      Prevent keyboard scrolling because this page has
-      intentionally been designed as a single-screen homepage.
+      Keyboard scrolling is intentionally disabled because
+      this is a single-screen homepage.
     */
 
     document.addEventListener(
       "keydown",
       (event) => {
 
-        const scrollingKeys = [
-          "ArrowUp",
+        const scrollKeys = [
           "ArrowDown",
-          "PageUp",
+          "ArrowUp",
           "PageDown",
+          "PageUp",
           "Home",
           "End",
           " "
         ];
 
-        if (scrollingKeys.includes(event.key)) {
 
-          event.preventDefault();
+        if (!scrollKeys.includes(event.key)) {
+          return;
+        }
 
-          hero.style.transition = "none";
 
-          if (
-            event.key === "ArrowDown" ||
-            event.key === "PageDown" ||
-            event.key === "End" ||
-            event.key === " "
-          ) {
-            pull = MAX_PULL;
-          }
+        event.preventDefault();
 
-          if (
-            event.key === "ArrowUp" ||
-            event.key === "PageUp" ||
-            event.key === "Home"
-          ) {
-            pull = -MAX_PULL;
-          }
 
-          applyElastic(pull);
+        /*
+          Only keys representing movement DOWN
+          trigger the bottom overscroll.
+        */
 
-          clearTimeout(animationFrame);
+        if (
+          event.key === "ArrowDown" ||
+          event.key === "PageDown" ||
+          event.key === "End" ||
+          event.key === " "
+        ) {
 
-          animationFrame = setTimeout(() => {
-            resetElastic();
-          }, 120);
+          clearTimeout(resetTimer);
+
+          overscroll = MAX_OVERSCROLL;
+
+          applyOverscroll(overscroll);
+
+
+          resetTimer = setTimeout(
+            resetOverscroll,
+            100
+          );
 
         }
+
+
+        /*
+          ArrowUp / PageUp / Home:
+          absolutely nothing.
+        */
 
       }
     );
