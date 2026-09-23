@@ -29,6 +29,8 @@
 
             line-height: 1.6;
             overflow-x: hidden;
+
+            overscroll-behavior-y: none;
         }
 
         a {
@@ -144,9 +146,12 @@
         .section-heading h1 {
             font-size: clamp(42px, 7vw, 70px);
 
-            letter-spacing: -4px;
+            letter-spacing: 0.5px;
 
             line-height: 1;
+
+            transition:
+                transform 420ms cubic-bezier(.22,.8,.25,1);
         }
 
         .section-heading .description {
@@ -157,6 +162,9 @@
             max-width: 600px;
 
             font-size: 16px;
+
+            transition:
+                transform 420ms cubic-bezier(.22,.8,.25,1);
         }
 
         /* PROJECT GRID */
@@ -167,6 +175,9 @@
             grid-template-columns: repeat(2, 1fr);
 
             gap: 20px;
+
+            transition:
+                transform 420ms cubic-bezier(.22,.8,.25,1);
         }
 
         /* PROJECT CARD */
@@ -238,12 +249,6 @@
             font-weight: 600;
 
             letter-spacing: 1px;
-        }
-
-        .project-icon {
-            font-size: 38px;
-
-            margin: 25px 0 15px;
         }
 
         .project-card h2 {
@@ -375,7 +380,7 @@
             }
 
             .section-heading h1 {
-                letter-spacing: -3px;
+                letter-spacing: 0.5px;
             }
 
             .projects-grid {
@@ -428,9 +433,11 @@
 
             <p>Things I've created</p>
 
-            <h1>My Projects</h1>
+            <h1 id="projectsTitle">
+                My Projects
+            </h1>
 
-            <div class="description">
+            <div class="description" id="projectsDescription">
                 A collection of websites, tools and experiments
                 I've created.
             </div>
@@ -438,7 +445,7 @@
         </div>
 
 
-        <div class="projects-grid">
+        <div class="projects-grid" id="projectsGrid">
 
 
             <!-- PROJECT 01 -->
@@ -449,10 +456,6 @@
 
                     <div class="project-number">
                         01 / WEBSITE
-                    </div>
-
-                    <div class="project-icon">
-                        🎬
                     </div>
 
                     <h2>
@@ -490,10 +493,6 @@
                         02 / TOOL
                     </div>
 
-                    <div class="project-icon">
-                        ✍️
-                    </div>
-
                     <h2>
                         Study With Me Creator
                     </h2>
@@ -529,10 +528,6 @@
                         03 / TOOL
                     </div>
 
-                    <div class="project-icon">
-                        🫥
-                    </div>
-
                     <h2>
                         Custom Blur PNG Maker
                     </h2>
@@ -566,10 +561,6 @@
 
                     <div class="project-number">
                         04 / EXPERIMENT
-                    </div>
-
-                    <div class="project-icon">
-                        🧩
                     </div>
 
                     <h2>
@@ -625,6 +616,238 @@
         </a>
 
     </footer>
+
+
+    <script>
+
+        const projectsTitle =
+            document.getElementById("projectsTitle");
+
+        const projectsDescription =
+            document.getElementById("projectsDescription");
+
+        const projectsGrid =
+            document.getElementById("projectsGrid");
+
+        let touchStartY = null;
+
+        let overscroll = 0;
+
+        let resetTimer = null;
+
+        const MAX_OVERSCROLL = 4;
+
+        const RESISTANCE = 0.08;
+
+
+        function atBottom() {
+
+            return (
+                window.innerHeight +
+                window.scrollY >=
+                document.documentElement.scrollHeight - 2
+            );
+
+        }
+
+
+        function applyOverscroll(amount) {
+
+            const value = Math.min(
+                Math.max(amount, 0),
+                MAX_OVERSCROLL
+            );
+
+            projectsTitle.style.transform =
+                `translate3d(0, ${-value * 0.18}px, 0)`;
+
+            projectsDescription.style.transform =
+                `translate3d(0, ${-value * 0.35}px, 0)`;
+
+            projectsGrid.style.transform =
+                `translate3d(0, ${-value * 0.52}px, 0)`;
+        }
+
+
+        function resetOverscroll() {
+
+            projectsTitle.style.transition =
+                "transform 420ms cubic-bezier(.22,.8,.25,1)";
+
+            projectsDescription.style.transition =
+                "transform 420ms cubic-bezier(.22,.8,.25,1)";
+
+            projectsGrid.style.transition =
+                "transform 420ms cubic-bezier(.22,.8,.25,1)";
+
+            projectsTitle.style.transform =
+                "translate3d(0, 0, 0)";
+
+            projectsDescription.style.transform =
+                "translate3d(0, 0, 0)";
+
+            projectsGrid.style.transform =
+                "translate3d(0, 0, 0)";
+
+            overscroll = 0;
+
+            clearTimeout(resetTimer);
+
+            resetTimer = setTimeout(() => {
+
+                projectsTitle.style.transition = "";
+                projectsDescription.style.transition = "";
+                projectsGrid.style.transition = "";
+
+            }, 450);
+        }
+
+
+        document.addEventListener(
+            "touchstart",
+            (event) => {
+
+                if (event.touches.length !== 1) {
+                    return;
+                }
+
+                touchStartY =
+                    event.touches[0].clientY;
+
+                projectsTitle.style.transition = "none";
+                projectsDescription.style.transition = "none";
+                projectsGrid.style.transition = "none";
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        document.addEventListener(
+            "touchmove",
+            (event) => {
+
+                if (touchStartY === null) {
+                    return;
+                }
+
+                const currentY =
+                    event.touches[0].clientY;
+
+                const delta =
+                    touchStartY - currentY;
+
+
+                /*
+
+                   Only activate when:
+
+                   1. User is at the bottom.
+                   2. Finger is moving upward.
+
+                */
+
+                if (!atBottom() || delta <= 0) {
+
+                    applyOverscroll(0);
+
+                    return;
+                }
+
+
+                overscroll =
+                    Math.min(
+                        delta * RESISTANCE,
+                        MAX_OVERSCROLL
+                    );
+
+                applyOverscroll(overscroll);
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        document.addEventListener(
+            "touchend",
+            () => {
+
+                if (touchStartY === null) {
+                    return;
+                }
+
+                touchStartY = null;
+
+                resetOverscroll();
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        document.addEventListener(
+            "touchcancel",
+            () => {
+
+                touchStartY = null;
+
+                resetOverscroll();
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        document.addEventListener(
+            "wheel",
+            (event) => {
+
+                if (!atBottom() || event.deltaY <= 0) {
+
+                    resetOverscroll();
+
+                    return;
+                }
+
+                clearTimeout(resetTimer);
+
+                projectsTitle.style.transition = "none";
+                projectsDescription.style.transition = "none";
+                projectsGrid.style.transition = "none";
+
+
+                overscroll +=
+                    event.deltaY * RESISTANCE;
+
+                overscroll =
+                    Math.min(
+                        overscroll,
+                        MAX_OVERSCROLL
+                    );
+
+                applyOverscroll(overscroll);
+
+
+                resetTimer = setTimeout(
+                    resetOverscroll,
+                    90
+                );
+
+            },
+            {
+                passive: true
+            }
+        );
+
+    </script>
 
 </body>
 </html>
