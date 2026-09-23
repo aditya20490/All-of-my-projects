@@ -147,11 +147,6 @@
       font-weight: 500;
       letter-spacing: 0.8px;
 
-      /*
-        Fixed top anchor.
-        Never moves during overscroll.
-      */
-
       transform: translate3d(0, 0, 0);
     }
 
@@ -316,9 +311,7 @@
 
 <body>
 
-  <!-- =========================
-       NAVIGATION
-  ========================= -->
+  <!-- NAVIGATION -->
 
   <nav>
 
@@ -345,33 +338,24 @@
   </nav>
 
 
-  <!-- =========================
-       HERO
-  ========================= -->
+  <!-- HERO -->
 
   <main class="hero">
 
     <div class="hero-content" id="heroContent">
 
-      <!-- TOP ANCHOR -->
       <div class="small-label" id="topAnchor">
         JEE Aspirant
       </div>
 
-
-      <!-- MIDDLE ITEM -->
       <h1 class="name" id="name">
         ADITYA
       </h1>
 
-
-      <!-- MIDDLE ITEM -->
       <p class="description" id="description">
         I build websites, tools and experiments to solve the small problems I come across.
       </p>
 
-
-      <!-- BOTTOM ITEM -->
       <div class="hero-buttons" id="bottomAnchor">
 
         <a
@@ -401,26 +385,8 @@
 
     /*
     ============================================================
-      IOS-STYLE RUBBER-BAND OVERSCROLL
+      SUBTLE IOS-STYLE RUBBER-BAND OVERSCROLL
     ============================================================
-
-      Normal page:
-        Nothing moves.
-
-      User swipes UP:
-        They are trying to look below the page.
-
-        JEE Aspirant  → fixed
-        ADITYA        → moves slightly
-        Description   → moves more
-        Buttons       → move the most
-
-      User swipes DOWN:
-        Nothing happens.
-
-      No scaling.
-      No squishing.
-      No distortion.
     */
 
 
@@ -438,19 +404,23 @@
 
 
     /*
-      Maximum visual overscroll.
-      Kept deliberately small.
+      Reduced from 18px → 10px.
+
+      This makes the maximum movement
+      considerably more subtle.
     */
 
-    const MAX_OVERSCROLL = 18;
+    const MAX_OVERSCROLL = 10;
 
 
     /*
-      Resistance.
-      Lower value = stronger resistance.
+      Reduced from 0.22 → 0.16.
+
+      The user has to pull farther to create
+      the same visual movement.
     */
 
-    const RESISTANCE = 0.22;
+    const RESISTANCE = 0.16;
 
 
     let touchStartY = null;
@@ -465,11 +435,6 @@
     */
 
     function applyOverscroll(amount) {
-
-      /*
-        If there is no positive overscroll,
-        everything is exactly where it normally is.
-      */
 
       if (amount <= 0) {
 
@@ -496,10 +461,8 @@
 
 
       /*
-        JEE ASPIRANT
-        ────────────
-
-        This is our fixed reference point.
+        JEE Aspirant
+        FIXED
       */
 
       topAnchor.style.transform =
@@ -508,41 +471,29 @@
 
       /*
         ADITYA
-        ──────
-
-        First level of compression.
+        Very subtle movement.
       */
 
       name.style.transform =
-        `translate3d(0, ${-value * 0.28}px, 0)`;
+        `translate3d(0, ${-value * 0.24}px, 0)`;
 
 
       /*
         DESCRIPTION
-        ───────────
-
-        Second level.
-
-        It moves farther because it is
-        farther from the fixed anchor.
+        Slightly stronger movement.
       */
 
       description.style.transform =
-        `translate3d(0, ${-value * 0.55}px, 0)`;
+        `translate3d(0, ${-value * 0.47}px, 0)`;
 
 
       /*
         BUTTONS
-        ───────
-
-        Final level.
-
-        They move the most, completing the
-        progressive compression of the entire stack.
+        Largest movement, but still subtle.
       */
 
       bottomAnchor.style.transform =
-        `translate3d(0, ${-value * 0.82}px, 0)`;
+        `translate3d(0, ${-value * 0.70}px, 0)`;
     }
 
 
@@ -611,11 +562,6 @@
           event.touches[0].clientY;
 
 
-        /*
-          Remove return animation while
-          finger is actively moving.
-        */
-
         topAnchor.style.transition = "none";
         name.style.transition = "none";
         description.style.transition = "none";
@@ -647,26 +593,13 @@
           event.touches[0].clientY;
 
 
-        /*
-          Finger UP
-          ↓
-          currentY gets smaller
-          ↓
-          delta becomes positive
-          ↓
-          user is trying to scroll DOWN
-        */
-
         const delta =
           touchStartY - currentY;
 
 
         /*
-          Finger DOWN:
-
-              delta <= 0
-
-          Therefore there is NO overscroll effect.
+          Swiping DOWN:
+          absolutely no effect.
         */
 
         if (delta <= 0) {
@@ -680,7 +613,7 @@
 
 
         /*
-          Apply rubber-band resistance.
+          Subtle rubber-band resistance.
         */
 
         overscroll =
@@ -755,11 +688,6 @@
       "wheel",
       (event) => {
 
-        /*
-          Positive deltaY means the user is trying
-          to move downward through the page.
-        */
-
         if (event.deltaY <= 0) {
 
           resetOverscroll();
@@ -831,10 +759,6 @@
 
         event.preventDefault();
 
-
-        /*
-          Only DOWN movement gets the effect.
-        */
 
         if (
           event.key === "ArrowDown" ||
