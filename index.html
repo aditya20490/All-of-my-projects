@@ -1,805 +1,709 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Aditya — JEE Aspirant</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0a0a0a;
+    }
+
+    body {
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+
+      color: #f5f5f5;
+      overscroll-behavior: none;
+      touch-action: none;
+    }
+
+    /* Subtle background atmosphere */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+
+      background:
+        radial-gradient(
+          circle at 50% 45%,
+          rgba(255,255,255,0.035),
+          transparent 38%
+        );
+
+      z-index: 0;
+    }
+
+    /* =========================
+       NAVIGATION
+    ========================= */
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 70px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 0 34px;
+
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+
+      background: rgba(10,10,10,0.72);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+
+      z-index: 10;
+    }
+
+    .logo {
+      color: #fff;
+      text-decoration: none;
+
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 1.8px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .nav-links a {
+      color: #8e8e8e;
+      text-decoration: none;
 
-    <title>Aditya — JEE Aspirant</title>
+      font-size: 13px;
+      font-weight: 500;
 
-    <meta name="description"
-          content="Aditya's personal website — websites, tools and experiments I've created.">
+      transition: color 0.2s ease;
+    }
 
-    <style>
+    .nav-links a:hover {
+      color: #fff;
+    }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    /* =========================
+       HERO
+    ========================= */
 
-        html,
-        body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
+    .hero {
+      position: relative;
+      z-index: 1;
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-                         Roboto, Helvetica, Arial, sans-serif;
+      width: 100%;
+      height: 100dvh;
 
-            background: #0a0a0a;
-            color: #f5f5f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-            line-height: 1.6;
+      padding: 70px 24px 0;
+    }
 
-            overscroll-behavior: none;
-            touch-action: pan-y;
-        }
+    /*
+      IMPORTANT:
 
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
+      The hero-content is NOT transformed.
 
+      Its children are positioned normally, while
+      the spacing between them is controlled using
+      CSS variables.
 
-        /* =========================================
-           BACKGROUND GLOW
-        ========================================= */
+      This means the text itself NEVER gets scaled.
+    */
 
-        body::before {
-            content: "";
+    .hero-content {
+      width: min(720px, 100%);
 
-            position: fixed;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
 
-            width: 500px;
-            height: 500px;
+      --gap-top: 0px;
+      --gap-name: 28px;
+      --gap-description: 18px;
+      --gap-buttons: 34px;
+    }
 
-            top: -250px;
-            left: 50%;
+    /* =========================
+       TOP ANCHOR
+    ========================= */
 
-            transform: translateX(-50%);
+    .small-label {
+      flex: 0 0 auto;
 
-            background: radial-gradient(
-                circle,
-                rgba(255,255,255,0.07),
-                transparent 70%
-            );
+      color: #8d8d8d;
 
-            pointer-events: none;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.8px;
 
-            z-index: 0;
-        }
+      /*
+        This element is the TOP ANCHOR.
+        It never moves.
+      */
+    }
 
+    /* =========================
+       NAME
+    ========================= */
 
-        /* =========================================
-           NAVIGATION
-        ========================================= */
+    .name {
+      margin-top: var(--gap-name);
 
-        nav {
-            position: fixed;
+      color: #fff;
 
-            top: 0;
-            left: 0;
+      font-size: clamp(52px, 9vw, 92px);
+      line-height: 0.95;
 
-            width: 100%;
-            height: 70px;
+      font-weight: 700;
+      letter-spacing: 1.8px;
 
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+      white-space: nowrap;
+    }
 
-            padding: 0 7%;
+    /* =========================
+       DESCRIPTION
+    ========================= */
 
-            background: rgba(10,10,10,0.75);
+    .description {
+      max-width: 570px;
 
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+      margin-top: var(--gap-description);
 
-            border-bottom: 1px solid rgba(255,255,255,0.07);
+      color: #8f8f8f;
 
-            z-index: 100;
-        }
+      font-size: 15px;
+      line-height: 1.7;
 
-        .logo {
-            font-size: 20px;
+      text-align: center;
+    }
 
-            font-weight: 700;
+    /* =========================
+       BUTTONS
+    ========================= */
 
-            letter-spacing: 0.5px;
-        }
+    .hero-buttons {
+      display: flex;
+      align-items: center;
+      gap: 12px;
 
-        .nav-links {
-            display: flex;
+      margin-top: var(--gap-buttons);
 
-            gap: 28px;
+      /*
+        These are the BOTTOM ANCHORS.
+        They don't move during overscroll.
+      */
+    }
 
-            list-style: none;
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
 
-            color: #aaa;
+      height: 44px;
+      padding: 0 20px;
 
-            font-size: 14px;
-        }
+      border-radius: 8px;
 
-        .nav-links a {
-            transition: color 0.2s ease;
-        }
+      text-decoration: none;
 
-        .nav-links a:hover {
-            color: white;
-        }
+      font-size: 13px;
+      font-weight: 600;
 
+      transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
 
-        /* =========================================
-           HERO
-        ========================================= */
+    .button-primary {
+      background: #fff;
+      color: #0a0a0a;
+    }
 
-        .hero {
-            width: 100%;
-            height: 100dvh;
+    .button-primary:hover {
+      transform: translateY(-2px);
+      background: #e9e9e9;
+    }
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+    .button-secondary {
+      color: #eee;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.035);
+    }
 
-            text-align: center;
+    .button-secondary:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.07);
+    }
 
-            padding: 70px 20px 20px;
+    /* =========================
+       MOBILE
+    ========================= */
 
-            position: relative;
+    @media (max-width: 600px) {
 
-            z-index: 1;
-        }
+      nav {
+        height: 62px;
+        padding: 0 20px;
+      }
 
-        .hero-content {
-            width: 100%;
-            max-width: 800px;
+      .nav-links {
+        gap: 18px;
+      }
 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+      .nav-links a {
+        font-size: 12px;
+      }
 
+      .hero {
+        padding-top: 62px;
+      }
 
-        /* =========================================
-           TOP ANCHOR
-           JEE ASPIRANT STAYS FIXED
-        ========================================= */
+      .hero-content {
+        --gap-name: 24px;
+        --gap-description: 16px;
+        --gap-buttons: 28px;
+      }
 
-        .small-label {
-            display: inline-block;
+      .small-label {
+        font-size: 12px;
+      }
 
-            color: #aaa;
+      .name {
+        font-size: clamp(48px, 15vw, 70px);
+        letter-spacing: 1px;
+      }
 
-            font-size: 13px;
+      .description {
+        max-width: 330px;
+        font-size: 14px;
+        line-height: 1.65;
+      }
 
-            letter-spacing: 2px;
+      .hero-buttons {
+        gap: 9px;
+      }
 
-            text-transform: uppercase;
-
-            margin-bottom: 20px;
-
-            transform-origin: center bottom;
-
-            will-change: transform;
-        }
-
-
-        /* =========================================
-           MIDDLE CONTENT
-        ========================================= */
-
-        .middle-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-
-            transform-origin: center top;
-
-            will-change: transform;
-        }
-
-        .hero h1 {
-            font-size: clamp(55px, 10vw, 110px);
-
-            line-height: 0.95;
-
-            font-weight: 800;
-
-            letter-spacing: 1.5px;
-
-            margin-bottom: 28px;
-
-            transform-origin: center;
-
-            will-change: transform;
-        }
-
-        .hero p {
-            max-width: 600px;
-
-            color: #aaa;
-
-            font-size: 18px;
-
-            line-height: 1.7;
-
-            transform-origin: center;
-
-            will-change: transform;
-        }
-
-
-        /* =========================================
-           BOTTOM ANCHOR
-           BUTTONS STAY FIXED
-        ========================================= */
-
-        .hero-buttons {
-            margin-top: 35px;
-
-            display: flex;
-
-            justify-content: center;
-
-            gap: 12px;
-
-            flex-wrap: wrap;
-
-            transform-origin: center top;
-
-            will-change: transform;
-        }
-
-
-        /* =========================================
-           BUTTONS
-        ========================================= */
-
-        .button {
-            display: inline-flex;
-
-            align-items: center;
-            justify-content: center;
-
-            padding: 12px 22px;
-
-            border-radius: 8px;
-
-            font-size: 14px;
-
-            font-weight: 600;
-
-            transition:
-                background 0.2s ease,
-                border-color 0.2s ease,
-                transform 0.2s ease;
-        }
-
-        .button-primary {
-            background: white;
-            color: black;
-        }
-
-        .button-primary:hover {
-            transform: translateY(-2px);
-
-            background: #e8e8e8;
-        }
-
-        .button-secondary {
-            border: 1px solid #333;
-
-            color: #ddd;
-        }
-
-        .button-secondary:hover {
-            border-color: #666;
-
-            transform: translateY(-2px);
-        }
-
-
-        /* =========================================
-           MOBILE
-        ========================================= */
-
-        @media (max-width: 700px) {
-
-            nav {
-                padding: 0 20px;
-            }
-
-            .nav-links {
-                gap: 15px;
-
-                font-size: 12px;
-            }
-
-            .hero {
-                padding-left: 20px;
-                padding-right: 20px;
-            }
-
-            .hero h1 {
-                letter-spacing: 1px;
-            }
-
-            .hero p {
-                font-size: 16px;
-            }
-        }
-
-
-        /* =========================================
-           SMALL HEIGHT DEVICES
-        ========================================= */
-
-        @media (max-height: 600px) {
-
-            .hero h1 {
-                font-size: clamp(45px, 9vw, 75px);
-
-                margin-bottom: 20px;
-            }
-
-            .small-label {
-                margin-bottom: 12px;
-            }
-
-            .hero-buttons {
-                margin-top: 25px;
-            }
-        }
-
-    </style>
+      .button {
+        height: 42px;
+        padding: 0 16px;
+        font-size: 12px;
+      }
+    }
+  </style>
 </head>
-
 
 <body>
 
+  <!-- NAVIGATION -->
+  <nav>
+    <a href="index.html" class="logo">ADITYA</a>
 
-    <!-- =========================================
-         NAVIGATION
-    ========================================= -->
+    <div class="nav-links">
+      <a href="projects.html">Projects</a>
 
-    <nav>
+      <a
+        href="https://github.com/aditya20490"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        GitHub ↗
+      </a>
+    </div>
+  </nav>
 
-        <a href="index.html" class="logo">
-            ADITYA
+
+  <!-- HERO -->
+  <main class="hero">
+
+    <div class="hero-content" id="heroContent">
+
+      <!-- TOP ANCHOR -->
+      <div class="small-label" id="topAnchor">
+        JEE Aspirant
+      </div>
+
+
+      <!-- MIDDLE CONTENT -->
+      <h1 class="name" id="name">
+        ADITYA
+      </h1>
+
+      <p class="description" id="description">
+        I build websites, tools and experiments to solve the small problems I come across.
+      </p>
+
+
+      <!-- BOTTOM ANCHOR -->
+      <div class="hero-buttons" id="bottomAnchor">
+
+        <a
+          href="projects.html"
+          class="button button-primary"
+        >
+          Explore My Projects
         </a>
 
-        <ul class="nav-links">
+        <a
+          href="https://github.com/aditya20490"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="button button-secondary"
+        >
+          GitHub ↗
+        </a>
 
-            <li>
-                <a href="projects.html">
-                    Projects
-                </a>
-            </li>
+      </div>
 
-            <li>
-                <a href="https://github.com/aditya20490"
-                   target="_blank"
-                   rel="noopener noreferrer">
-                    GitHub
-                </a>
-            </li>
+    </div>
 
-        </ul>
+  </main>
 
-    </nav>
 
+  <script>
 
-    <!-- =========================================
-         HERO
-    ========================================= -->
+    /*
+      ============================================================
+      ELASTIC OVERSCROLL
+      ============================================================
 
-    <main class="hero">
+      No element is scaled.
 
-        <div class="hero-content">
+      We only modify the vertical spacing between elements.
 
+      TOP overscroll:
+        JEE Aspirant stays fixed.
+        Everything below it compresses upward.
 
-            <!-- TOP ANCHOR -->
+      BOTTOM overscroll:
+        Buttons stay fixed.
+        Everything above them compresses downward.
 
-            <div class="small-label" id="topAnchor">
-                JEE Aspirant
-            </div>
+      When released:
+        The original spacing smoothly returns.
+    */
 
 
-            <!-- MIDDLE CONTENT -->
+    const hero = document.getElementById("heroContent");
 
-            <div class="middle-content" id="middleContent">
+    const MAX_PULL = 34;
 
-                <h1 id="name">
-                    ADITYA
-                </h1>
+    let pull = 0;
+    let startY = null;
+    let lastY = null;
 
-                <p id="description">
-                    I build websites, tools and experiments to solve
-                    the small problems I come across.
-                </p>
+    let animationFrame = null;
 
-            </div>
 
+    /*
+      Apply the elastic spacing.
 
-            <!-- BOTTOM ANCHOR -->
+      We progressively reduce the gaps between the
+      elements rather than transforming the elements.
+    */
 
-            <div class="hero-buttons" id="bottomAnchor">
+    function applyElastic(value) {
 
-                <a href="projects.html"
-                   class="button button-primary">
-                    Explore My Projects
-                </a>
+      /*
+        value > 0
+        = user is trying to go DOWN the page
+        = top anchor stays fixed
+        = lower content compresses upward
+      */
 
-                <a href="https://github.com/aditya20490"
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   class="button button-secondary">
-                    GitHub ↗
-                </a>
+      if (value > 0) {
 
-            </div>
+        const amount = Math.min(value, MAX_PULL);
 
+        /*
+          The farther elements are from the anchor,
+          the more their spacing is compressed.
+        */
 
-        </div>
+        hero.style.setProperty(
+          "--gap-name",
+          `${28 - amount * 0.32}px`
+        );
 
-    </main>
+        hero.style.setProperty(
+          "--gap-description",
+          `${18 - amount * 0.22}px`
+        );
 
+        hero.style.setProperty(
+          "--gap-buttons",
+          `${34 - amount * 0.28}px`
+        );
 
-    <script>
+      }
 
-        /* =========================================
-           ELEMENTS
-        ========================================= */
 
-        const topAnchor =
-            document.getElementById("topAnchor");
+      /*
+        value < 0
+        = user is trying to go UP the page
+        = bottom anchor stays fixed
+        = upper content compresses toward buttons
+      */
 
-        const middleContent =
-            document.getElementById("middleContent");
+      else {
 
-        const name =
-            document.getElementById("name");
+        const amount = Math.min(Math.abs(value), MAX_PULL);
 
-        const description =
-            document.getElementById("description");
+        hero.style.setProperty(
+          "--gap-name",
+          `${28 - amount * 0.28}px`
+        );
 
-        const bottomAnchor =
-            document.getElementById("bottomAnchor");
+        hero.style.setProperty(
+          "--gap-description",
+          `${18 - amount * 0.22}px`
+        );
 
+        hero.style.setProperty(
+          "--gap-buttons",
+          `${34 - amount * 0.32}px`
+        );
 
-        /* =========================================
-           SETTINGS
+      }
 
-           VERY SMALL VALUES ON PURPOSE.
-        ========================================= */
+    }
 
-        const MAX_EFFECT = 12;
 
-        let effect = 0;
+    /*
+      Smoothly return to the original layout.
+    */
 
-        let startY = 0;
+    function resetElastic() {
 
-        let dragging = false;
+      hero.style.transition = `
+        --gap-name 420ms cubic-bezier(.22,.8,.25,1),
+        --gap-description 420ms cubic-bezier(.22,.8,.25,1),
+        --gap-buttons 420ms cubic-bezier(.22,.8,.25,1)
+      `;
 
-        let wheelTimer;
+      hero.style.setProperty("--gap-name", "28px");
+      hero.style.setProperty("--gap-description", "18px");
+      hero.style.setProperty("--gap-buttons", "34px");
 
+      pull = 0;
 
-        /* =========================================
-           UPDATE VISUAL EFFECT
-        ========================================= */
+      setTimeout(() => {
+        hero.style.transition = "";
+      }, 450);
+    }
 
-        function updateEffect(value) {
 
-            effect = Math.max(
-                -MAX_EFFECT,
-                Math.min(MAX_EFFECT, value)
-            );
+    /*
+      ------------------------------------------------------------
+      TOUCH
+      ------------------------------------------------------------
+    */
 
+    document.addEventListener(
+      "touchstart",
+      (event) => {
 
-            /*
-             ----------------------------------------
-             Pull DOWN
-             (finger moves down)
+        if (event.touches.length !== 1) return;
 
-             TOP ANCHOR remains still.
+        startY = event.touches[0].clientY;
+        lastY = startY;
 
-             Middle content compresses upward
-             toward JEE Aspirant.
+        hero.style.transition = "none";
 
-             Buttons remain stable.
-             ----------------------------------------
-            */
+      },
+      { passive: true }
+    );
 
-            if (effect > 0) {
 
-                const amount = effect;
+    document.addEventListener(
+      "touchmove",
+      (event) => {
 
-                middleContent.style.transform =
-                    `translateY(${-amount * 0.35}px)
-                     scaleY(${1 - amount * 0.006})`;
+        if (startY === null) return;
 
-                name.style.transform =
-                    `scaleY(${1 - amount * 0.008})`;
+        const currentY = event.touches[0].clientY;
 
-                description.style.transform =
-                    `scaleY(${1 - amount * 0.012})`;
+        /*
+          Finger moving upward:
+          currentY becomes smaller.
 
-                bottomAnchor.style.transform =
-                    "translateY(0)";
+          That means the user is trying to scroll DOWN.
+        */
 
-            }
+        const delta = startY - currentY;
 
+        /*
+          Resistance curve.
 
-            /*
-             ----------------------------------------
-             Pull UP
-             (finger moves up)
+          The farther they pull,
+          the harder it becomes to pull.
+        */
 
-             BOTTOM ANCHOR remains stable.
+        const resisted =
+          Math.sign(delta) *
+          Math.min(
+            Math.abs(delta) * 0.28,
+            MAX_PULL
+          );
 
-             Middle content compresses downward
-             toward the buttons.
+        pull = resisted;
 
-             JEE Aspirant remains stable.
-             ----------------------------------------
-            */
+        applyElastic(pull);
 
-            else {
+        lastY = currentY;
 
-                const amount = Math.abs(effect);
+      },
+      { passive: true }
+    );
 
-                middleContent.style.transform =
-                    `translateY(${amount * 0.35}px)
-                     scaleY(${1 - amount * 0.006})`;
 
-                name.style.transform =
-                    `scaleY(${1 - amount * 0.008})`;
+    document.addEventListener(
+      "touchend",
+      () => {
 
-                description.style.transform =
-                    `scaleY(${1 - amount * 0.012})`;
+        if (startY === null) return;
 
-                bottomAnchor.style.transform =
-                    "translateY(0)";
-            }
+        resetElastic();
+
+        startY = null;
+        lastY = null;
+
+      },
+      { passive: true }
+    );
+
+
+    /*
+      ------------------------------------------------------------
+      MOUSE WHEEL
+      ------------------------------------------------------------
+
+      Desktop users also get the same effect.
+    */
+
+    let wheelTimeout;
+
+    document.addEventListener(
+      "wheel",
+      (event) => {
+
+        event.preventDefault();
+
+        hero.style.transition = "none";
+
+        /*
+          Accumulate wheel movement.
+        */
+
+        pull += event.deltaY * 0.12;
+
+        pull = Math.max(
+          -MAX_PULL,
+          Math.min(MAX_PULL, pull)
+        );
+
+        applyElastic(pull);
+
+        clearTimeout(wheelTimeout);
+
+        wheelTimeout = setTimeout(() => {
+          resetElastic();
+        }, 90);
+
+      },
+      { passive: false }
+    );
+
+
+    /*
+      ------------------------------------------------------------
+      KEYBOARD
+      ------------------------------------------------------------
+
+      Prevent keyboard scrolling because this page has
+      intentionally been designed as a single-screen homepage.
+    */
+
+    document.addEventListener(
+      "keydown",
+      (event) => {
+
+        const scrollingKeys = [
+          "ArrowUp",
+          "ArrowDown",
+          "PageUp",
+          "PageDown",
+          "Home",
+          "End",
+          " "
+        ];
+
+        if (scrollingKeys.includes(event.key)) {
+
+          event.preventDefault();
+
+          hero.style.transition = "none";
+
+          if (
+            event.key === "ArrowDown" ||
+            event.key === "PageDown" ||
+            event.key === "End" ||
+            event.key === " "
+          ) {
+            pull = MAX_PULL;
+          }
+
+          if (
+            event.key === "ArrowUp" ||
+            event.key === "PageUp" ||
+            event.key === "Home"
+          ) {
+            pull = -MAX_PULL;
+          }
+
+          applyElastic(pull);
+
+          clearTimeout(animationFrame);
+
+          animationFrame = setTimeout(() => {
+            resetElastic();
+          }, 120);
+
         }
 
+      }
+    );
 
-        /* =========================================
-           RESET
-        ========================================= */
-
-        function resetEffect() {
-
-            topAnchor.style.transition =
-                "none";
-
-            middleContent.style.transition =
-                "transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)";
-
-            name.style.transition =
-                "transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)";
-
-            description.style.transition =
-                "transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)";
-
-            bottomAnchor.style.transition =
-                "transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)";
-
-
-            middleContent.style.transform =
-                "translateY(0) scaleY(1)";
-
-            name.style.transform =
-                "scaleY(1)";
-
-            description.style.transform =
-                "scaleY(1)";
-
-            bottomAnchor.style.transform =
-                "translateY(0)";
-
-            effect = 0;
-        }
-
-
-        /* =========================================
-           TOUCH START
-        ========================================= */
-
-        document.addEventListener(
-            "touchstart",
-            function(event) {
-
-                if (event.touches.length !== 1) {
-                    return;
-                }
-
-                startY =
-                    event.touches[0].clientY;
-
-                dragging = true;
-
-
-                middleContent.style.transition =
-                    "none";
-
-                name.style.transition =
-                    "none";
-
-                description.style.transition =
-                    "none";
-
-                bottomAnchor.style.transition =
-                    "none";
-
-            },
-            {
-                passive: true
-            }
-        );
-
-
-        /* =========================================
-           TOUCH MOVE
-        ========================================= */
-
-        document.addEventListener(
-            "touchmove",
-            function(event) {
-
-                if (!dragging) {
-                    return;
-                }
-
-                const currentY =
-                    event.touches[0].clientY;
-
-                const movement =
-                    currentY - startY;
-
-
-                /*
-                    Very strong resistance.
-
-                    This makes the effect subtle
-                    rather than looking like rubber.
-                */
-
-                const resistance =
-                    movement * 0.08;
-
-
-                updateEffect(resistance);
-
-            },
-            {
-                passive: true
-            }
-        );
-
-
-        /* =========================================
-           TOUCH END
-        ========================================= */
-
-        document.addEventListener(
-            "touchend",
-            function() {
-
-                if (!dragging) {
-                    return;
-                }
-
-                dragging = false;
-
-                resetEffect();
-
-            },
-            {
-                passive: true
-            }
-        );
-
-
-        /* =========================================
-           MOUSE WHEEL / TRACKPAD
-        ========================================= */
-
-        window.addEventListener(
-            "wheel",
-            function(event) {
-
-                event.preventDefault();
-
-
-                const movement =
-                    -event.deltaY * 0.035;
-
-
-                updateEffect(
-                    effect + movement
-                );
-
-
-                clearTimeout(wheelTimer);
-
-
-                wheelTimer = setTimeout(
-                    resetEffect,
-                    100
-                );
-
-            },
-            {
-                passive: false
-            }
-        );
-
-
-        /* =========================================
-           KEYBOARD
-        ========================================= */
-
-        window.addEventListener(
-            "keydown",
-            function(event) {
-
-                const blockedKeys = [
-                    "ArrowUp",
-                    "ArrowDown",
-                    "PageUp",
-                    "PageDown",
-                    "Home",
-                    "End",
-                    " "
-                ];
-
-
-                if (
-                    blockedKeys.includes(event.key)
-                ) {
-
-                    event.preventDefault();
-
-
-                    if (
-                        event.key === "ArrowUp" ||
-                        event.key === "PageUp"
-                    ) {
-
-                        updateEffect(
-                            effect - 5
-                        );
-
-                    }
-
-
-                    if (
-                        event.key === "ArrowDown" ||
-                        event.key === "PageDown"
-                    ) {
-
-                        updateEffect(
-                            effect + 5
-                        );
-
-                    }
-
-
-                    clearTimeout(wheelTimer);
-
-
-                    wheelTimer = setTimeout(
-                        resetEffect,
-                        100
-                    );
-                }
-
-            }
-        );
-
-    </script>
+  </script>
 
 </body>
 </html>
