@@ -10,6 +10,7 @@
           content="Aditya's personal website — websites, tools and experiments I've created.">
 
     <style>
+
         * {
             margin: 0;
             padding: 0;
@@ -33,7 +34,6 @@
             line-height: 1.6;
 
             overscroll-behavior: none;
-
             touch-action: pan-y;
         }
 
@@ -42,7 +42,10 @@
             text-decoration: none;
         }
 
-        /* ---------- Background Glow ---------- */
+
+        /* =========================================
+           BACKGROUND GLOW
+        ========================================= */
 
         body::before {
             content: "";
@@ -68,7 +71,10 @@
             z-index: 0;
         }
 
-        /* ---------- Navigation ---------- */
+
+        /* =========================================
+           NAVIGATION
+        ========================================= */
 
         nav {
             position: fixed;
@@ -93,8 +99,6 @@
             border-bottom: 1px solid rgba(255,255,255,0.07);
 
             z-index: 100;
-
-            transform-origin: center;
         }
 
         .logo {
@@ -125,30 +129,10 @@
             color: white;
         }
 
-        /* ---------- Main Wrapper ---------- */
 
-        .elastic-wrapper {
-            width: 100%;
-            height: 100dvh;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            will-change: transform;
-
-            transform: translate3d(0, 0, 0);
-
-            /* Smooth spring-back */
-            transition: transform 0.55s cubic-bezier(
-                0.16,
-                1,
-                0.3,
-                1
-            );
-        }
-
-        /* ---------- Hero ---------- */
+        /* =========================================
+           HERO
+        ========================================= */
 
         .hero {
             width: 100%;
@@ -171,10 +155,16 @@
             width: 100%;
             max-width: 800px;
 
-            will-change: transform;
-
-            transform-origin: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
+
+
+        /* =========================================
+           TOP ANCHOR
+           JEE ASPIRANT STAYS FIXED
+        ========================================= */
 
         .small-label {
             display: inline-block;
@@ -188,9 +178,26 @@
             text-transform: uppercase;
 
             margin-bottom: 20px;
+
+            transform-origin: center bottom;
+
+            will-change: transform;
         }
 
-        /* ---------- Name ---------- */
+
+        /* =========================================
+           MIDDLE CONTENT
+        ========================================= */
+
+        .middle-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            transform-origin: center top;
+
+            will-change: transform;
+        }
 
         .hero h1 {
             font-size: clamp(55px, 10vw, 110px);
@@ -202,21 +209,31 @@
             letter-spacing: 1.5px;
 
             margin-bottom: 28px;
+
+            transform-origin: center;
+
+            will-change: transform;
         }
 
         .hero p {
             max-width: 600px;
-
-            margin: auto;
 
             color: #aaa;
 
             font-size: 18px;
 
             line-height: 1.7;
+
+            transform-origin: center;
+
+            will-change: transform;
         }
 
-        /* ---------- Buttons ---------- */
+
+        /* =========================================
+           BOTTOM ANCHOR
+           BUTTONS STAY FIXED
+        ========================================= */
 
         .hero-buttons {
             margin-top: 35px;
@@ -228,7 +245,16 @@
             gap: 12px;
 
             flex-wrap: wrap;
+
+            transform-origin: center top;
+
+            will-change: transform;
         }
+
+
+        /* =========================================
+           BUTTONS
+        ========================================= */
 
         .button {
             display: inline-flex;
@@ -244,7 +270,10 @@
 
             font-weight: 600;
 
-            transition: all 0.2s ease;
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
         }
 
         .button-primary {
@@ -270,7 +299,10 @@
             transform: translateY(-2px);
         }
 
-        /* ---------- Mobile ---------- */
+
+        /* =========================================
+           MOBILE
+        ========================================= */
 
         @media (max-width: 700px) {
 
@@ -298,7 +330,10 @@
             }
         }
 
-        /* ---------- Small Screens ---------- */
+
+        /* =========================================
+           SMALL HEIGHT DEVICES
+        ========================================= */
 
         @media (max-height: 600px) {
 
@@ -316,12 +351,17 @@
                 margin-top: 25px;
             }
         }
+
     </style>
 </head>
 
+
 <body>
 
-    <!-- Navigation -->
+
+    <!-- =========================================
+         NAVIGATION
+    ========================================= -->
 
     <nav>
 
@@ -350,99 +390,222 @@
     </nav>
 
 
-    <!-- Elastic Homepage -->
+    <!-- =========================================
+         HERO
+    ========================================= -->
 
-    <div class="elastic-wrapper" id="elasticWrapper">
+    <main class="hero">
 
-        <main class="hero">
+        <div class="hero-content">
 
-            <div class="hero-content">
 
-                <div class="small-label">
-                    JEE Aspirant
-                </div>
+            <!-- TOP ANCHOR -->
 
-                <h1>
+            <div class="small-label" id="topAnchor">
+                JEE Aspirant
+            </div>
+
+
+            <!-- MIDDLE CONTENT -->
+
+            <div class="middle-content" id="middleContent">
+
+                <h1 id="name">
                     ADITYA
                 </h1>
 
-                <p>
+                <p id="description">
                     I build websites, tools and experiments to solve
                     the small problems I come across.
                 </p>
 
-                <div class="hero-buttons">
+            </div>
 
-                    <a href="projects.html"
-                       class="button button-primary">
-                        Explore My Projects
-                    </a>
 
-                    <a href="https://github.com/aditya20490"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       class="button button-secondary">
-                        GitHub ↗
-                    </a>
+            <!-- BOTTOM ANCHOR -->
 
-                </div>
+            <div class="hero-buttons" id="bottomAnchor">
+
+                <a href="projects.html"
+                   class="button button-primary">
+                    Explore My Projects
+                </a>
+
+                <a href="https://github.com/aditya20490"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="button button-secondary">
+                    GitHub ↗
+                </a>
 
             </div>
 
-        </main>
 
-    </div>
+        </div>
+
+    </main>
 
 
     <script>
 
-        const wrapper = document.getElementById("elasticWrapper");
+        /* =========================================
+           ELEMENTS
+        ========================================= */
 
-        let currentPull = 0;
+        const topAnchor =
+            document.getElementById("topAnchor");
+
+        const middleContent =
+            document.getElementById("middleContent");
+
+        const name =
+            document.getElementById("name");
+
+        const description =
+            document.getElementById("description");
+
+        const bottomAnchor =
+            document.getElementById("bottomAnchor");
+
+
+        /* =========================================
+           SETTINGS
+
+           VERY SMALL VALUES ON PURPOSE.
+        ========================================= */
+
+        const MAX_EFFECT = 12;
+
+        let effect = 0;
+
         let startY = 0;
-        let lastY = 0;
+
         let dragging = false;
-        let wheelTimeout;
 
-        const MAX_PULL = 55;
+        let wheelTimer;
 
-        /* --------------------------------
-           Apply elastic movement
-        -------------------------------- */
 
-        function applyPull(amount) {
+        /* =========================================
+           UPDATE VISUAL EFFECT
+        ========================================= */
 
-            currentPull = Math.max(
-                -MAX_PULL,
-                Math.min(MAX_PULL, amount)
+        function updateEffect(value) {
+
+            effect = Math.max(
+                -MAX_EFFECT,
+                Math.min(MAX_EFFECT, value)
             );
 
-            wrapper.style.transition = "none";
 
-            wrapper.style.transform =
-                `translate3d(0, ${currentPull}px, 0)`;
+            /*
+             ----------------------------------------
+             Pull DOWN
+             (finger moves down)
+
+             TOP ANCHOR remains still.
+
+             Middle content compresses upward
+             toward JEE Aspirant.
+
+             Buttons remain stable.
+             ----------------------------------------
+            */
+
+            if (effect > 0) {
+
+                const amount = effect;
+
+                middleContent.style.transform =
+                    `translateY(${-amount * 0.35}px)
+                     scaleY(${1 - amount * 0.006})`;
+
+                name.style.transform =
+                    `scaleY(${1 - amount * 0.008})`;
+
+                description.style.transform =
+                    `scaleY(${1 - amount * 0.012})`;
+
+                bottomAnchor.style.transform =
+                    "translateY(0)";
+
+            }
+
+
+            /*
+             ----------------------------------------
+             Pull UP
+             (finger moves up)
+
+             BOTTOM ANCHOR remains stable.
+
+             Middle content compresses downward
+             toward the buttons.
+
+             JEE Aspirant remains stable.
+             ----------------------------------------
+            */
+
+            else {
+
+                const amount = Math.abs(effect);
+
+                middleContent.style.transform =
+                    `translateY(${amount * 0.35}px)
+                     scaleY(${1 - amount * 0.006})`;
+
+                name.style.transform =
+                    `scaleY(${1 - amount * 0.008})`;
+
+                description.style.transform =
+                    `scaleY(${1 - amount * 0.012})`;
+
+                bottomAnchor.style.transform =
+                    "translateY(0)";
+            }
         }
 
 
-        /* --------------------------------
-           Return to normal position
-        -------------------------------- */
+        /* =========================================
+           RESET
+        ========================================= */
 
-        function releasePull() {
+        function resetEffect() {
 
-            wrapper.style.transition =
-                "transform 0.55s cubic-bezier(0.16, 1, 0.3, 1)";
+            topAnchor.style.transition =
+                "none";
 
-            wrapper.style.transform =
-                "translate3d(0, 0, 0)";
+            middleContent.style.transition =
+                "transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)";
 
-            currentPull = 0;
+            name.style.transition =
+                "transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)";
+
+            description.style.transition =
+                "transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)";
+
+            bottomAnchor.style.transition =
+                "transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)";
+
+
+            middleContent.style.transform =
+                "translateY(0) scaleY(1)";
+
+            name.style.transform =
+                "scaleY(1)";
+
+            description.style.transform =
+                "scaleY(1)";
+
+            bottomAnchor.style.transform =
+                "translateY(0)";
+
+            effect = 0;
         }
 
 
-        /* --------------------------------
-           Touch / Mobile
-        -------------------------------- */
+        /* =========================================
+           TOUCH START
+        ========================================= */
 
         document.addEventListener(
             "touchstart",
@@ -452,12 +615,23 @@
                     return;
                 }
 
-                startY = event.touches[0].clientY;
-                lastY = startY;
+                startY =
+                    event.touches[0].clientY;
 
                 dragging = true;
 
-                wrapper.style.transition = "none";
+
+                middleContent.style.transition =
+                    "none";
+
+                name.style.transition =
+                    "none";
+
+                description.style.transition =
+                    "none";
+
+                bottomAnchor.style.transition =
+                    "none";
 
             },
             {
@@ -465,6 +639,10 @@
             }
         );
 
+
+        /* =========================================
+           TOUCH MOVE
+        ========================================= */
 
         document.addEventListener(
             "touchmove",
@@ -480,17 +658,19 @@
                 const movement =
                     currentY - startY;
 
+
                 /*
-                    Resistance makes the stretch
-                    become progressively harder.
+                    Very strong resistance.
+
+                    This makes the effect subtle
+                    rather than looking like rubber.
                 */
 
                 const resistance =
-                    movement * 0.45;
+                    movement * 0.08;
 
-                applyPull(resistance);
 
-                lastY = currentY;
+                updateEffect(resistance);
 
             },
             {
@@ -498,6 +678,10 @@
             }
         );
 
+
+        /* =========================================
+           TOUCH END
+        ========================================= */
 
         document.addEventListener(
             "touchend",
@@ -509,7 +693,7 @@
 
                 dragging = false;
 
-                releasePull();
+                resetEffect();
 
             },
             {
@@ -518,33 +702,32 @@
         );
 
 
-        /* --------------------------------
-           Mouse Wheel / Trackpad
-        -------------------------------- */
+        /* =========================================
+           MOUSE WHEEL / TRACKPAD
+        ========================================= */
 
         window.addEventListener(
             "wheel",
             function(event) {
 
-                /*
-                    Prevent the browser from trying
-                    to scroll the page.
-                */
-
                 event.preventDefault();
 
-                const movement =
-                    -event.deltaY * 0.18;
 
-                applyPull(
-                    currentPull + movement
+                const movement =
+                    -event.deltaY * 0.035;
+
+
+                updateEffect(
+                    effect + movement
                 );
 
-                clearTimeout(wheelTimeout);
 
-                wheelTimeout = setTimeout(
-                    releasePull,
-                    120
+                clearTimeout(wheelTimer);
+
+
+                wheelTimer = setTimeout(
+                    resetEffect,
+                    100
                 );
 
             },
@@ -554,9 +737,9 @@
         );
 
 
-        /* --------------------------------
-           Keyboard protection
-        -------------------------------- */
+        /* =========================================
+           KEYBOARD
+        ========================================= */
 
         window.addEventListener(
             "keydown",
@@ -572,29 +755,44 @@
                     " "
                 ];
 
-                if (blockedKeys.includes(event.key)) {
+
+                if (
+                    blockedKeys.includes(event.key)
+                ) {
 
                     event.preventDefault();
+
 
                     if (
                         event.key === "ArrowUp" ||
                         event.key === "PageUp"
                     ) {
-                        applyPull(30);
+
+                        updateEffect(
+                            effect - 5
+                        );
+
                     }
+
 
                     if (
                         event.key === "ArrowDown" ||
                         event.key === "PageDown"
                     ) {
-                        applyPull(-30);
+
+                        updateEffect(
+                            effect + 5
+                        );
+
                     }
 
-                    clearTimeout(wheelTimeout);
 
-                    wheelTimeout = setTimeout(
-                        releasePull,
-                        120
+                    clearTimeout(wheelTimer);
+
+
+                    wheelTimer = setTimeout(
+                        resetEffect,
+                        100
                     );
                 }
 
