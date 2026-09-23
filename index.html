@@ -50,6 +50,7 @@
         );
     }
 
+
     /* =========================
        NAVIGATION
     ========================= */
@@ -106,6 +107,7 @@
       color: #fff;
     }
 
+
     /* =========================
        HERO
     ========================= */
@@ -125,13 +127,6 @@
       z-index: 1;
     }
 
-    /*
-      The layout itself NEVER gets transformed.
-
-      Each individual item gets a tiny translateY
-      only while actual overscroll is happening.
-    */
-
     .hero-content {
       width: min(720px, 100%);
 
@@ -140,8 +135,9 @@
       align-items: center;
     }
 
+
     /* =========================
-       ITEMS
+       JEE ASPIRANT
     ========================= */
 
     .small-label {
@@ -152,12 +148,17 @@
       letter-spacing: 0.8px;
 
       /*
-        TOP ANCHOR:
-        This element never moves.
+        Fixed top anchor.
+        Never moves during overscroll.
       */
 
       transform: translate3d(0, 0, 0);
     }
+
+
+    /* =========================
+       ADITYA
+    ========================= */
 
     .name {
       margin-top: 28px;
@@ -175,6 +176,11 @@
       transform: translate3d(0, 0, 0);
     }
 
+
+    /* =========================
+       DESCRIPTION
+    ========================= */
+
     .description {
       max-width: 570px;
 
@@ -190,17 +196,17 @@
       transform: translate3d(0, 0, 0);
     }
 
+
+    /* =========================
+       BUTTONS
+    ========================= */
+
     .hero-buttons {
       display: flex;
       align-items: center;
       gap: 12px;
 
       margin-top: 34px;
-
-      /*
-        BOTTOM ANCHOR:
-        These buttons never move.
-      */
 
       transform: translate3d(0, 0, 0);
     }
@@ -248,6 +254,7 @@
       border-color: rgba(255, 255, 255, 0.25);
       background: rgba(255, 255, 255, 0.07);
     }
+
 
     /* =========================
        MOBILE
@@ -352,19 +359,19 @@
       </div>
 
 
-      <!-- ITEM 1 -->
+      <!-- MIDDLE ITEM -->
       <h1 class="name" id="name">
         ADITYA
       </h1>
 
 
-      <!-- ITEM 2 -->
+      <!-- MIDDLE ITEM -->
       <p class="description" id="description">
         I build websites, tools and experiments to solve the small problems I come across.
       </p>
 
 
-      <!-- BOTTOM ANCHOR -->
+      <!-- BOTTOM ITEM -->
       <div class="hero-buttons" id="bottomAnchor">
 
         <a
@@ -394,53 +401,53 @@
 
     /*
     ============================================================
-      iOS-STYLE BOTTOM OVERSCROLL
+      IOS-STYLE RUBBER-BAND OVERSCROLL
     ============================================================
 
-      IMPORTANT:
+      Normal page:
+        Nothing moves.
 
-      The normal layout is NEVER modified.
+      User swipes UP:
+        They are trying to look below the page.
 
-      We detect how far the user tries to scroll beyond
-      the bottom boundary.
+        JEE Aspirant  → fixed
+        ADITYA        → moves slightly
+        Description   → moves more
+        Buttons       → move the most
 
-      Then we progressively translate the items according
-      to their position.
+      User swipes DOWN:
+        Nothing happens.
 
-      This is conceptually the same idea as the video:
-
-        overscroll distance
-              ↓
-        spacing / item offset
-              ↓
-        progressively larger movement
-
-      There is NO scaleY().
-      There is NO text distortion.
-      There is NO movement of the whole hero.
+      No scaling.
+      No squishing.
+      No distortion.
     */
 
 
-    const topAnchor = document.getElementById("topAnchor");
-    const name = document.getElementById("name");
-    const description = document.getElementById("description");
-    const bottomAnchor = document.getElementById("bottomAnchor");
+    const topAnchor =
+      document.getElementById("topAnchor");
+
+    const name =
+      document.getElementById("name");
+
+    const description =
+      document.getElementById("description");
+
+    const bottomAnchor =
+      document.getElementById("bottomAnchor");
 
 
     /*
       Maximum visual overscroll.
-
-      Keep this small because the design is intentionally subtle.
+      Kept deliberately small.
     */
 
     const MAX_OVERSCROLL = 18;
 
 
     /*
-      Resistance factor.
-
-      Larger = easier to pull.
-      Smaller = stronger resistance.
+      Resistance.
+      Lower value = stronger resistance.
     */
 
     const RESISTANCE = 0.22;
@@ -448,7 +455,6 @@
 
     let touchStartY = null;
     let overscroll = 0;
-
     let resetTimer = null;
 
 
@@ -461,41 +467,27 @@
     function applyOverscroll(amount) {
 
       /*
-        IMPORTANT:
-
-        Top anchor stays exactly where it is.
-        Bottom anchor stays exactly where it is.
-
-        Only the middle items move.
-
-        The farther an item is toward the bottom,
-        the greater its translation.
-
-        This creates the visual impression that
-        the vertical spaces are being compressed.
+        If there is no positive overscroll,
+        everything is exactly where it normally is.
       */
-
 
       if (amount <= 0) {
 
-        /*
-          Absolutely NO top overscroll effect.
+        topAnchor.style.transform =
+          "translate3d(0, 0, 0)";
 
-          Swiping downward simply does nothing.
-        */
+        name.style.transform =
+          "translate3d(0, 0, 0)";
 
-        topAnchor.style.transform = "translate3d(0, 0, 0)";
-        name.style.transform = "translate3d(0, 0, 0)";
-        description.style.transform = "translate3d(0, 0, 0)";
-        bottomAnchor.style.transform = "translate3d(0, 0, 0)";
+        description.style.transform =
+          "translate3d(0, 0, 0)";
+
+        bottomAnchor.style.transform =
+          "translate3d(0, 0, 0)";
 
         return;
       }
 
-
-      /*
-        Amount is already resisted.
-      */
 
       const value = Math.min(
         amount,
@@ -504,9 +496,10 @@
 
 
       /*
-        TOP ANCHOR
-        ──────────
-        Never moves.
+        JEE ASPIRANT
+        ────────────
+
+        This is our fixed reference point.
       */
 
       topAnchor.style.transform =
@@ -516,34 +509,40 @@
       /*
         ADITYA
         ──────
-        Moves slightly upward.
+
+        First level of compression.
       */
 
       name.style.transform =
-        `translate3d(0, ${-value * 0.32}px, 0)`;
+        `translate3d(0, ${-value * 0.28}px, 0)`;
 
 
       /*
         DESCRIPTION
         ───────────
-        Moves more because it is farther
-        from the fixed top anchor.
+
+        Second level.
+
+        It moves farther because it is
+        farther from the fixed anchor.
       */
 
       description.style.transform =
-        `translate3d(0, ${-value * 0.64}px, 0)`;
+        `translate3d(0, ${-value * 0.55}px, 0)`;
 
 
       /*
         BUTTONS
         ───────
-        Fixed bottom anchor.
 
-        They do NOT move.
+        Final level.
+
+        They move the most, completing the
+        progressive compression of the entire stack.
       */
 
       bottomAnchor.style.transform =
-        "translate3d(0, 0, 0)";
+        `translate3d(0, ${-value * 0.82}px, 0)`;
     }
 
 
@@ -555,24 +554,14 @@
 
     function resetOverscroll() {
 
-      /*
-        Spring-like CSS transition.
-
-        Again, we're only moving the middle items.
-        Nothing gets scaled.
-      */
-
-      topAnchor.style.transition =
+      const transition =
         "transform 420ms cubic-bezier(.22,.8,.25,1)";
 
-      name.style.transition =
-        "transform 420ms cubic-bezier(.22,.8,.25,1)";
 
-      description.style.transition =
-        "transform 420ms cubic-bezier(.22,.8,.25,1)";
-
-      bottomAnchor.style.transition =
-        "transform 420ms cubic-bezier(.22,.8,.25,1)";
+      topAnchor.style.transition = transition;
+      name.style.transition = transition;
+      description.style.transition = transition;
+      bottomAnchor.style.transition = transition;
 
 
       topAnchor.style.transform =
@@ -623,8 +612,8 @@
 
 
         /*
-          Remove the return animation while
-          the finger is actively moving.
+          Remove return animation while
+          finger is actively moving.
         */
 
         topAnchor.style.transition = "none";
@@ -659,11 +648,11 @@
 
 
         /*
-          Finger moves UP
+          Finger UP
           ↓
-          currentY becomes smaller
+          currentY gets smaller
           ↓
-          positive delta
+          delta becomes positive
           ↓
           user is trying to scroll DOWN
         */
@@ -673,15 +662,11 @@
 
 
         /*
-          ONLY positive delta creates overscroll.
+          Finger DOWN:
 
-          If the finger moves DOWN:
+              delta <= 0
 
-              delta < 0
-
-          and therefore:
-
-              NOTHING HAPPENS.
+          Therefore there is NO overscroll effect.
         */
 
         if (delta <= 0) {
@@ -695,10 +680,7 @@
 
 
         /*
-          Apply resistance.
-
-          This creates the characteristic
-          iOS rubber-band feel.
+          Apply rubber-band resistance.
         */
 
         overscroll =
@@ -765,16 +747,8 @@
 
     /*
     ============================================================
-      DESKTOP WHEEL
+      MOUSE / TRACKPAD
     ============================================================
-
-      Same idea for mouse/trackpad.
-
-      Scrolling DOWN:
-        → bottom overscroll effect.
-
-      Scrolling UP:
-        → nothing.
     */
 
     document.addEventListener(
@@ -782,7 +756,7 @@
       (event) => {
 
         /*
-          deltaY > 0 means the user is trying
+          Positive deltaY means the user is trying
           to move downward through the page.
         */
 
@@ -795,6 +769,7 @@
 
 
         clearTimeout(resetTimer);
+
 
         topAnchor.style.transition = "none";
         name.style.transition = "none";
@@ -832,9 +807,6 @@
     ============================================================
       KEYBOARD
     ============================================================
-
-      Keyboard scrolling is intentionally disabled because
-      this is a single-screen homepage.
     */
 
     document.addEventListener(
@@ -861,8 +833,7 @@
 
 
         /*
-          Only keys representing movement DOWN
-          trigger the bottom overscroll.
+          Only DOWN movement gets the effect.
         */
 
         if (
@@ -883,14 +854,7 @@
             resetOverscroll,
             100
           );
-
         }
-
-
-        /*
-          ArrowUp / PageUp / Home:
-          absolutely nothing.
-        */
 
       }
     );
