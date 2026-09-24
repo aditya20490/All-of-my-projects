@@ -14,6 +14,10 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
         }
 
         html {
@@ -36,6 +40,9 @@
         a {
             color: inherit;
             text-decoration: none;
+
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         body::before {
@@ -125,6 +132,9 @@
             margin: auto;
 
             padding: 150px 25px 100px;
+
+            transition:
+                transform 420ms cubic-bezier(.22,.8,.25,1);
         }
 
         .section-heading {
@@ -149,9 +159,6 @@
             letter-spacing: 0.5px;
 
             line-height: 1;
-
-            transition:
-                transform 420ms cubic-bezier(.22,.8,.25,1);
         }
 
         .section-heading .description {
@@ -162,9 +169,6 @@
             max-width: 600px;
 
             font-size: 16px;
-
-            transition:
-                transform 420ms cubic-bezier(.22,.8,.25,1);
         }
 
         /* PROJECT GRID */
@@ -175,9 +179,6 @@
             grid-template-columns: repeat(2, 1fr);
 
             gap: 20px;
-
-            transition:
-                transform 420ms cubic-bezier(.22,.8,.25,1);
         }
 
         /* PROJECT CARD */
@@ -427,17 +428,17 @@
 
     <!-- Projects -->
 
-    <main class="projects-section">
+    <main class="projects-section" id="projectsSection">
 
         <div class="section-heading">
 
             <p>Things I've created</p>
 
-            <h1 id="projectsTitle">
+            <h1>
                 My Projects
             </h1>
 
-            <div class="description" id="projectsDescription">
+            <div class="description">
                 A collection of websites, tools and experiments
                 I've created.
             </div>
@@ -445,7 +446,7 @@
         </div>
 
 
-        <div class="projects-grid" id="projectsGrid">
+        <div class="projects-grid">
 
 
             <!-- PROJECT 01 -->
@@ -620,14 +621,8 @@
 
     <script>
 
-        const projectsTitle =
-            document.getElementById("projectsTitle");
-
-        const projectsDescription =
-            document.getElementById("projectsDescription");
-
-        const projectsGrid =
-            document.getElementById("projectsGrid");
+        const projectsSection =
+            document.getElementById("projectsSection");
 
         let touchStartY = null;
 
@@ -635,9 +630,26 @@
 
         let resetTimer = null;
 
+
+        /*
+            VERY SMALL ELASTIC EFFECT
+
+            Same tiny quantity you liked:
+
+            4px maximum movement
+            0.08 resistance
+        */
+
         const MAX_OVERSCROLL = 4;
 
         const RESISTANCE = 0.08;
+
+
+        function atTop() {
+
+            return window.scrollY <= 1;
+
+        }
 
 
         function atBottom() {
@@ -651,42 +663,42 @@
         }
 
 
-        function applyOverscroll(amount) {
+        function applyOverscroll(amount, direction) {
 
             const value = Math.min(
                 Math.max(amount, 0),
                 MAX_OVERSCROLL
             );
 
-            projectsTitle.style.transform =
-                `translate3d(0, ${-value * 0.18}px, 0)`;
 
-            projectsDescription.style.transform =
-                `translate3d(0, ${-value * 0.35}px, 0)`;
+            /*
+                Top:
 
-            projectsGrid.style.transform =
-                `translate3d(0, ${-value * 0.52}px, 0)`;
+                Content moves slightly DOWN.
+
+                Bottom:
+
+                Content moves slightly UP.
+            */
+
+            const movement =
+                direction === "top"
+                    ? value
+                    : -value;
+
+
+            projectsSection.style.transform =
+                `translate3d(0, ${movement}px, 0)`;
+
         }
 
 
         function resetOverscroll() {
 
-            projectsTitle.style.transition =
+            projectsSection.style.transition =
                 "transform 420ms cubic-bezier(.22,.8,.25,1)";
 
-            projectsDescription.style.transition =
-                "transform 420ms cubic-bezier(.22,.8,.25,1)";
-
-            projectsGrid.style.transition =
-                "transform 420ms cubic-bezier(.22,.8,.25,1)";
-
-            projectsTitle.style.transform =
-                "translate3d(0, 0, 0)";
-
-            projectsDescription.style.transform =
-                "translate3d(0, 0, 0)";
-
-            projectsGrid.style.transform =
+            projectsSection.style.transform =
                 "translate3d(0, 0, 0)";
 
             overscroll = 0;
@@ -695,13 +707,18 @@
 
             resetTimer = setTimeout(() => {
 
-                projectsTitle.style.transition = "";
-                projectsDescription.style.transition = "";
-                projectsGrid.style.transition = "";
+                projectsSection.style.transition = "";
 
             }, 450);
+
         }
 
+
+        /*
+
+            TOUCH START
+
+        */
 
         document.addEventListener(
             "touchstart",
@@ -714,9 +731,8 @@
                 touchStartY =
                     event.touches[0].clientY;
 
-                projectsTitle.style.transition = "none";
-                projectsDescription.style.transition = "none";
-                projectsGrid.style.transition = "none";
+                projectsSection.style.transition =
+                    "none";
 
             },
             {
@@ -724,6 +740,12 @@
             }
         );
 
+
+        /*
+
+            TOUCH MOVE
+
+        */
 
         document.addEventListener(
             "touchmove",
@@ -733,37 +755,83 @@
                     return;
                 }
 
+
                 const currentY =
                     event.touches[0].clientY;
+
 
                 const delta =
                     touchStartY - currentY;
 
 
                 /*
+                    AT TOP
 
-                   Only activate when:
+                    Finger moving DOWN
+                    = delta is negative
 
-                   1. User is at the bottom.
-                   2. Finger is moving upward.
-
+                    Give tiny downward elastic effect.
                 */
 
-                if (!atBottom() || delta <= 0) {
+                if (atTop() && delta < 0) {
 
-                    applyOverscroll(0);
+                    overscroll =
+                        Math.min(
+                            Math.abs(delta) * RESISTANCE,
+                            MAX_OVERSCROLL
+                        );
+
+                    applyOverscroll(
+                        overscroll,
+                        "top"
+                    );
 
                     return;
                 }
 
 
-                overscroll =
-                    Math.min(
-                        delta * RESISTANCE,
-                        MAX_OVERSCROLL
+                /*
+                    AT BOTTOM
+
+                    Finger moving UP
+                    = delta is positive
+
+                    Give tiny upward elastic effect.
+                */
+
+                if (atBottom() && delta > 0) {
+
+                    overscroll =
+                        Math.min(
+                            delta * RESISTANCE,
+                            MAX_OVERSCROLL
+                        );
+
+                    applyOverscroll(
+                        overscroll,
+                        "bottom"
                     );
 
-                applyOverscroll(overscroll);
+                    return;
+                }
+
+
+                /*
+                    NORMAL SCROLLING
+
+                    No elastic effect.
+                */
+
+                if (overscroll !== 0) {
+
+                    overscroll = 0;
+
+                    applyOverscroll(
+                        0,
+                        "bottom"
+                    );
+
+                }
 
             },
             {
@@ -771,6 +839,10 @@
             }
         );
 
+
+        /*
+            TOUCH END
+        */
 
         document.addEventListener(
             "touchend",
@@ -791,6 +863,10 @@
         );
 
 
+        /*
+            TOUCH CANCEL
+        */
+
         document.addEventListener(
             "touchcancel",
             () => {
@@ -806,44 +882,144 @@
         );
 
 
+        /*
+            MOUSE WHEEL
+
+            At the top:
+            negative deltaY = scrolling upward visually,
+            so give a tiny downward effect.
+
+            At the bottom:
+            positive deltaY = trying to scroll further down,
+            so give a tiny upward effect.
+        */
+
         document.addEventListener(
             "wheel",
             (event) => {
 
-                if (!atBottom() || event.deltaY <= 0) {
+                if (atTop() && event.deltaY < 0) {
 
-                    resetOverscroll();
+                    clearTimeout(resetTimer);
+
+                    projectsSection.style.transition =
+                        "none";
+
+                    overscroll +=
+                        Math.abs(event.deltaY) *
+                        RESISTANCE;
+
+                    overscroll =
+                        Math.min(
+                            overscroll,
+                            MAX_OVERSCROLL
+                        );
+
+                    applyOverscroll(
+                        overscroll,
+                        "top"
+                    );
+
+                    resetTimer = setTimeout(
+                        resetOverscroll,
+                        90
+                    );
 
                     return;
                 }
 
-                clearTimeout(resetTimer);
 
-                projectsTitle.style.transition = "none";
-                projectsDescription.style.transition = "none";
-                projectsGrid.style.transition = "none";
+                if (atBottom() && event.deltaY > 0) {
 
+                    clearTimeout(resetTimer);
 
-                overscroll +=
-                    event.deltaY * RESISTANCE;
+                    projectsSection.style.transition =
+                        "none";
 
-                overscroll =
-                    Math.min(
+                    overscroll +=
+                        event.deltaY *
+                        RESISTANCE;
+
+                    overscroll =
+                        Math.min(
+                            overscroll,
+                            MAX_OVERSCROLL
+                        );
+
+                    applyOverscroll(
                         overscroll,
-                        MAX_OVERSCROLL
+                        "bottom"
                     );
 
-                applyOverscroll(overscroll);
+                    resetTimer = setTimeout(
+                        resetOverscroll,
+                        90
+                    );
+
+                    return;
+                }
 
 
-                resetTimer = setTimeout(
-                    resetOverscroll,
-                    90
-                );
+                if (overscroll !== 0) {
+                    resetOverscroll();
+                }
 
             },
             {
                 passive: true
+            }
+        );
+
+
+        /*
+            DISABLE NORMAL TEXT SELECTION
+
+            This prevents the usual:
+            - blue text highlight
+            - Select
+            - Copy
+            - Cut
+            - Select all
+
+            on long press / drag.
+        */
+
+        document.addEventListener(
+            "selectstart",
+            (event) => {
+
+                event.preventDefault();
+
+            }
+        );
+
+
+        /*
+            DISABLE RIGHT-CLICK / CONTEXT MENU
+
+            Especially useful on desktop.
+        */
+
+        document.addEventListener(
+            "contextmenu",
+            (event) => {
+
+                event.preventDefault();
+
+            }
+        );
+
+
+        /*
+            DISABLE DRAGGING TEXT
+        */
+
+        document.addEventListener(
+            "dragstart",
+            (event) => {
+
+                event.preventDefault();
+
             }
         );
 
