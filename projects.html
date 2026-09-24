@@ -312,6 +312,60 @@
             background: #ddd;
         }
 
+        /* PURE CINEMA — FLAGSHIP PROJECT */
+
+        .project-card.flagship {
+            min-height: 430px;
+        }
+
+        .project-card.flagship .project-description {
+            margin-top: 18px;
+
+            color: #888;
+
+            font-size: 14px;
+
+            max-width: 500px;
+
+            line-height: 1.55;
+        }
+
+        .project-card.flagship .project-description-intro {
+            margin-bottom: 14px;
+        }
+
+        .project-card.flagship .project-features {
+            list-style: none;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 7px;
+        }
+
+        .project-card.flagship .project-features li {
+            position: relative;
+
+            padding-left: 14px;
+
+            color: #888;
+
+            font-size: 13px;
+
+            line-height: 1.45;
+        }
+
+        .project-card.flagship .project-features li::before {
+            content: "•";
+
+            position: absolute;
+
+            left: 0;
+
+            color: #666;
+        }
+
         /* BACK HOME */
 
         .back-home {
@@ -391,6 +445,11 @@
             .project-card {
                 min-height: 300px;
             }
+
+            .project-card.flagship {
+                min-height: 430px;
+            }
+
         }
     </style>
 </head>
@@ -449,9 +508,9 @@
         <div class="projects-grid">
 
 
-            <!-- PROJECT 01 -->
+            <!-- PROJECT 01 — PURE CINEMA -->
 
-            <article class="project-card">
+            <article class="project-card flagship">
 
                 <div>
 
@@ -463,10 +522,47 @@
                         Pure Cinema
                     </h2>
 
-                    <p>
-                        A cinema-focused web project built and
-                        deployed as a standalone website.
-                    </p>
+                    <div class="project-description">
+
+                        <div class="project-description-intro">
+                            A complete movie discovery platform built
+                            for finding, exploring, and watching films
+                            in one place.
+                        </div>
+
+                        <ul class="project-features">
+
+                            <li>
+                                Extensive movie catalog across genres and eras
+                            </li>
+
+                            <li>
+                                Movies and trailers in one place
+                            </li>
+
+                            <li>
+                                Detailed director and cast information
+                            </li>
+
+                            <li>
+                                Genre, release, and movie details
+                            </li>
+
+                            <li>
+                                Multiple quality and viewing options
+                            </li>
+
+                            <li>
+                                Organized catalog for easier discovery
+                            </li>
+
+                            <li>
+                                Clean, fast, and convenient browsing experience
+                            </li>
+
+                        </ul>
+
+                    </div>
 
                 </div>
 
@@ -671,16 +767,6 @@
             );
 
 
-            /*
-                Top:
-
-                Content moves slightly DOWN.
-
-                Bottom:
-
-                Content moves slightly UP.
-            */
-
             const movement =
                 direction === "top"
                     ? value
@@ -714,12 +800,6 @@
         }
 
 
-        /*
-
-            TOUCH START
-
-        */
-
         document.addEventListener(
             "touchstart",
             (event) => {
@@ -741,12 +821,6 @@
         );
 
 
-        /*
-
-            TOUCH MOVE
-
-        */
-
         document.addEventListener(
             "touchmove",
             (event) => {
@@ -763,15 +837,6 @@
                 const delta =
                     touchStartY - currentY;
 
-
-                /*
-                    AT TOP
-
-                    Finger moving DOWN
-                    = delta is negative
-
-                    Give tiny downward elastic effect.
-                */
 
                 if (atTop() && delta < 0) {
 
@@ -790,15 +855,6 @@
                 }
 
 
-                /*
-                    AT BOTTOM
-
-                    Finger moving UP
-                    = delta is positive
-
-                    Give tiny upward elastic effect.
-                */
-
                 if (atBottom() && delta > 0) {
 
                     overscroll =
@@ -815,12 +871,6 @@
                     return;
                 }
 
-
-                /*
-                    NORMAL SCROLLING
-
-                    No elastic effect.
-                */
 
                 if (overscroll !== 0) {
 
@@ -839,10 +889,6 @@
             }
         );
 
-
-        /*
-            TOUCH END
-        */
 
         document.addEventListener(
             "touchend",
@@ -863,10 +909,6 @@
         );
 
 
-        /*
-            TOUCH CANCEL
-        */
-
         document.addEventListener(
             "touchcancel",
             () => {
@@ -881,18 +923,6 @@
             }
         );
 
-
-        /*
-            MOUSE WHEEL
-
-            At the top:
-            negative deltaY = scrolling upward visually,
-            so give a tiny downward effect.
-
-            At the bottom:
-            positive deltaY = trying to scroll further down,
-            so give a tiny upward effect.
-        */
 
         document.addEventListener(
             "wheel",
@@ -971,19 +1001,6 @@
         );
 
 
-        /*
-            DISABLE NORMAL TEXT SELECTION
-
-            This prevents the usual:
-            - blue text highlight
-            - Select
-            - Copy
-            - Cut
-            - Select all
-
-            on long press / drag.
-        */
-
         document.addEventListener(
             "selectstart",
             (event) => {
@@ -994,12 +1011,6 @@
         );
 
 
-        /*
-            DISABLE RIGHT-CLICK / CONTEXT MENU
-
-            Especially useful on desktop.
-        */
-
         document.addEventListener(
             "contextmenu",
             (event) => {
@@ -1009,10 +1020,6 @@
             }
         );
 
-
-        /*
-            DISABLE DRAGGING TEXT
-        */
 
         document.addEventListener(
             "dragstart",
